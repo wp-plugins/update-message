@@ -1,0 +1,23 @@
+.update_message {
+	background: #fff url('../img/bkg-yellow.gif') repeat-x top;
+	border: 1px solid #e6db55;
+	padding: 15px 15px 5px 15px;
+	margin: 10px 0 10px 0;
+	-moz-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.update_message p {
+	font: normal 11px/14px Arial;
+	margin: 0;
+	padding: 0 0 10px 0;
+	color: #555;
+}
+
+.update_message small {
+	font: bold 11px/14px Arial;
+	color: #555;
+	text-transform: uppercase;
+}
