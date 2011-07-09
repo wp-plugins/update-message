@@ -3,7 +3,7 @@
 Contributors: SedLex
 Author: SedLex
 Author URI: http://www.sedlex.fr/
-Plugin URI: http://www.sedlex.fr/cote_geek/
+Plugin URI: http://wordpress.org/extend/plugins/update-message/
 Tags: plugin, update, message, maj
 Requires at least: 3.0
 Tested up to: 3.2
