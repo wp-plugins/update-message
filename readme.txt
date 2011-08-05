@@ -36,6 +36,9 @@ The message can be configured direcly when editing a post. There is a box 'Updat
 == Changelog ==
 
 = 1.0.1 =
+* Update of the framework (3.0)
+
+= 1.0.1 =
 * First release in the wild web (enjoy)
 
 
