@@ -35,12 +35,15 @@ The message can be configured direcly when editing a post. There is a box 'Updat
 
 == Changelog ==
 
-= 1.0.1 =
+= 1.0.2 =
+* The update message may be integrated with a shortcode [maj]
+* Enhance translations, feedback and other plugins
+
+= 1.0.2 =
 * Update of the framework (3.0)
 
 = 1.0.1 =
 * First release in the wild web (enjoy)
-
 
 == Frequently Asked Questions ==
 
@@ -48,8 +51,5 @@ The message can be configured direcly when editing a post. There is a box 'Updat
 
 Visit http://www.sedlex.fr/cote_geek/
 
-
-
-
-
-
+ 
+InfoVersion:434c029d5d37e906cf23e1bb8d66aa1f

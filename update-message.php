@@ -2,8 +2,10 @@
 /*
 Plugin Name: Update Message
 Description: <p>Add an update box in posts. </p><p>This box can contain a message, for instance in order to point out that the post have been modified of to stress that the post in no longer up to date</p><p>The message can be configured direcly when editing a post. There is a box 'Update message' added on the left.</p><p>Plugin developped from the orginal plugin <a href="http://wordpress.org/extend/plugins/wp-update-message/">WP Update Message</a>. </p><p>This plugin is under GPL licence. </p>
-Version: 1.0.2
+Version: 1.0.3
 Author: SedLex
+Author Email: sedlex@sedlex.fr
+Framework Email: sedlex@sedlex.fr
 Author URI: http://www.sedlex.fr/
 Plugin URI: http://wordpress.org/extend/plugins/update-message/
 License: GPL3
@@ -35,6 +37,7 @@ class updatemessage extends pluginSedLex {
 		add_action('save_post', array($this,'update_message_save'));
 		add_filter('the_content', array($this,'update_message_content'));
 		add_action('admin_menu', array($this, 'meta_box'));
+		add_shortcode( 'maj', array( $this, 'maj_shortcode' ) );
 
 	}
 	
@@ -63,15 +66,15 @@ class updatemessage extends pluginSedLex {
 		echo '<input type="hidden" name="myplugin_noncename" id="myplugin_noncename" value="' . wp_create_nonce( plugin_basename(__FILE__) ) . '" />';
 		?>
 		<textarea style="width: 98%;" cols="40" rows="6" name="update_message_text" id="update_message_text"><?php echo get_post_meta($post->ID, 'update_message_text', true); ?></textarea>
-		<p>If you have been updated this post with new information, use this box to inform about it.</p>
-		<p>Please not that the different update messages have to be separed with a <code>---</code></p>
-		<p>If you want to force the date displayed, the first line must be <code>*dd/mm/yy*</code></p>
-		<p>Example:</p>
+		<p><?php echo __('If you have been updated this post with new information, use this box to inform about it.', $this->pluginID) ; ?></p>
+		<p><?php echo __('Please note that the different update messages have to be separed with 3 dashes:', $this->pluginID) ; ?> <code>---</code></p>
+		<p><?php echo sprintf(__('If you want to force the date displayed, the first line must be %s', $this->pluginID), "<code>*dd/mm/yy*</code>") ; ?> </p>
+		<p><?php echo __('Example:', $this->pluginID) ; ?></p>
 		<p><code>*dd/mm/yy*<br/>
-		The first message<br/>
+		<?php echo __('The first message', $this->pluginID) ; ?><br/>
 		---<br/>
 		*dd/mm/yy*<br/>
-		The second message</code></p>
+		<?php echo __('The second message', $this->pluginID) ; ?></code></p>
 		<?php
 	}
 	
@@ -194,8 +197,10 @@ class updatemessage extends pluginSedLex {
 		<div class="wrap">
 			<div id="icon-themes" class="icon32"><br></div>
 			<h2><?php echo $this->pluginName ?></h2>
+		</div>
+		<div style="padding:20px;">
 			<?php echo $this->signature ; ?>
-			<p>This plugin creates information box in posts/page to contain "update information"</p>
+			<p><?php echo __('This plugin creates information box in posts/page to contain update information', $this->pluginID) ; ?></p>
 			<!--debut de personnalisation-->
 		<?php
 			
@@ -205,51 +210,77 @@ class updatemessage extends pluginSedLex {
 			//		(bien mettre a jour les liens contenu dans les <li> qui suivent)
 			//
 			//==========================================================================================
-	?>		
-			<script>jQuery(function($){ $('#tabs').tabs(); }) ; </script>		
-			<div id="tabs">
-				<ul class="hide-if-no-js">
-					<li><a href="#tab-parameters"><? echo __('Parameters',$this->pluginName) ?></a></li>					
-				</ul>
-				<?php
-				//==========================================================================================
-				//
-				// Premier Onglet 
-				//		(bien verifier que id du 1er div correspond a celui indique dans la mise en 
-				//			place des onglets)
-				//
-				//==========================================================================================
-				?>
-				<div id="tab-parameters" class="blc-section">
-				
-					<h3 class="hide-if-js"><? echo __('Parameters',$this->pluginName) ?></h3>
-					<p><?php echo __('Here is the parameters of the plugin. Please modify them at your convenience.',$this->pluginName) ; ?> </p>
-				
+			$tabs = new adminTabs() ; 
+			
+			ob_start() ; 
+					?>
+					<p><?php echo __('Here is the parameters of the plugin. Please modify them at your convenience.',$this->pluginID) ; ?> </p>
 					<?php					
 					$params = new parametersSedLex($this, 'tab-parameters') ; 
-					$params->add_title(__('Where do you want to place the update message?',$this->pluginName)) ; 
-					$params->add_param('position', __('Placement:',$this->pluginName)) ; 
-					$params->add_title(__('How do you want to render the message?',$this->pluginName)) ; 
-					$params->add_param('html', __('HTML:',$this->pluginName)) ; 
-					$comment = __('The standard html is:',$this->pluginName); 
+					$params->add_title(__('Where do you want to place the update message?',$this->pluginID)) ; 
+					$params->add_param('position', __('Placement:',$this->pluginID)) ; 
+					$params->add_comment(sprintf(__('You can also add a shorcode %s to add an updated box wherever you want in your posts', $this->pluginID), '<code>[maj update="jj/mm/yy"]your updated text[/maj]</code>')) ; 
+					$params->add_title(__('How do you want to render the message?',$this->pluginID)) ; 
+					$params->add_param('html', __('HTML:',$this->pluginID)) ; 
+					$comment = __('The standard html is:',$this->pluginID); 
 					$comment .= "<br/><span style='margin-left: 30px;'><code>&lt;div class=\"update_message\"&gt;</code></span><br/>" ; 
 					$comment .= "<span style='margin-left: 60px;'><code>&lt;small&gt;Updated: %ud%&lt;/small&gt</code></span><br/>" ; 
 					$comment .= "<span style='margin-left: 60px;'><code>&lt;p&gt;%ut%&lt;/p&gt</code></span><br/>" ; 
 					$comment .= "<span style='margin-left: 30px;'><code>&lt;/div&gt</code></span><br/>";
-					$comment .= "<code>%pd%</code> = Published date</span><br/>" ; 
-					$comment .= "<code>%ud%</code> = Updated date</span><br/>" ; 
-					$comment .= "<code>%ut%</code> = Updated text</span>" ; 
+					$comment .= "<code>%pd%</code> = ".__('Published date',$this->pluginID)."</span><br/>" ; 
+					$comment .= "<code>%ud%</code> = ".__('Updated date',$this->pluginID)."</span><br/>" ; 
+					$comment .= "<code>%ut%</code> = ".__('Updated text',$this->pluginID)."</span>" ; 
 					$params->add_comment($comment) ; 	
 					$params->flush() ; 
 					
-					?>
-				</div>
-			</div>
-			<!--fin de personnalisation-->
-			<?php echo $this->signature ; ?>
+			$tabs->add_tab(__('Parameters',  $this->pluginID), ob_get_clean() ) ; 	
+			
+			ob_start() ; 
+				$plugin = str_replace("/","",str_replace(basename(__FILE__),"",plugin_basename( __FILE__))) ; 
+				$trans = new translationSL($this->pluginID, $plugin) ; 
+				$trans->enable_translation() ; 
+			$tabs->add_tab(__('Manage translations',  $this->pluginID), ob_get_clean() ) ; 	
+
+			ob_start() ; 
+				echo __('This form is an easy way to contact the author and to discuss issues / incompatibilities / etc.',  $this->pluginID) ; 
+				$plugin = str_replace("/","",str_replace(basename(__FILE__),"",plugin_basename( __FILE__))) ; 
+				$trans = new feedbackSL($plugin, $this->pluginID) ; 
+				$trans->enable_feedback() ; 
+			$tabs->add_tab(__('Give feedback',  $this->pluginID), ob_get_clean() ) ; 	
+			
+			ob_start() ; 
+				echo "<p>".__('Here is the plugins developped by the author',  $this->pluginID) ."</p>" ; 
+				$trans = new otherPlugins("sedLex", array('wp-pirates-search')) ; 
+				$trans->list_plugins() ; 
+			$tabs->add_tab(__('Other possible plugins',  $this->pluginID), ob_get_clean() ) ; 	
+			
+			echo $tabs->flush() ; 
+			
+			echo $this->signature ; ?>
 		</div>
 		<?php
 	}
+	
+	//[maj update="jj/mm/yy"]text[/maj]
+	
+	function maj_shortcode( $_atts, $text ) {
+		
+		$atts = shortcode_atts( array(
+			'update' => ""
+		), $_atts );
+		
+		$html = stripslashes($this->get_param('html')) ; 
+		
+					
+		$b = str_replace('%ud%', $atts['update'], $html);
+		$b = str_replace('%pd%', get_the_time(), $b);
+		$b = str_replace('%ut%', $text, $b);
+					
+		return $b ; 					
+		
+		
+	}
+
 }
 
 $updatemessage = updatemessage::getInstance();

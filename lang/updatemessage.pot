@@ -1,0 +1,120 @@
+Content-Transfer-Encoding: 8bit
+
+#: update-message.php:69
+#@ updatemessage
+msgid "If you have been updated this post with new information, use this box to inform about it."
+msgstr ""
+
+#: update-message.php:70
+#@ updatemessage
+msgid "Please note that the different update messages have to be separed with 3 dashes:"
+msgstr ""
+
+#: update-message.php:71
+#@ updatemessage
+msgid "If you want to force the date displayed, the first line must be %s"
+msgstr ""
+
+#: update-message.php:72
+#@ updatemessage
+msgid "Example:"
+msgstr ""
+
+#: update-message.php:74
+#@ updatemessage
+msgid "The first message"
+msgstr ""
+
+#: update-message.php:77
+#@ updatemessage
+msgid "The second message"
+msgstr ""
+
+#: update-message.php:203
+#@ updatemessage
+msgid "This plugin creates information box in posts/page to contain update information"
+msgstr ""
+
+#: update-message.php:217
+#@ updatemessage
+msgid "Here is the parameters of the plugin. Please modify them at your convenience."
+msgstr ""
+
+#: update-message.php:220
+#@ updatemessage
+msgid "Where do you want to place the update message?"
+msgstr ""
+
+#: update-message.php:221
+#@ updatemessage
+msgid "Placement:"
+msgstr ""
+
+#: update-message.php:222
+#@ updatemessage
+msgid "You can also add a shorcode %s to add an updated box wherever you want in your posts"
+msgstr ""
+
+#: update-message.php:223
+#@ updatemessage
+msgid "How do you want to render the message?"
+msgstr ""
+
+#: update-message.php:224
+#@ updatemessage
+msgid "HTML:"
+msgstr ""
+
+#: update-message.php:225
+#@ updatemessage
+msgid "The standard html is:"
+msgstr ""
+
+#: update-message.php:230
+#@ updatemessage
+msgid "Published date"
+msgstr ""
+
+#: update-message.php:231
+#@ updatemessage
+msgid "Updated date"
+msgstr ""
+
+#: update-message.php:232
+#@ updatemessage
+msgid "Updated text"
+msgstr ""
+
+#: update-message.php:236
+#@ updatemessage
+msgid "Parameters"
+msgstr ""
+
+#: update-message.php:242
+#: core/templates/my-plugin.php:212
+#@ updatemessage
+msgid "Manage translations"
+msgstr ""
+
+#: update-message.php:245
+#: core/templates/my-plugin.php:215
+#@ updatemessage
+msgid "This form is an easy way to contact the author and to discuss issues / incompatibilities / etc."
+msgstr ""
+
+#: update-message.php:249
+#: core/templates/my-plugin.php:219
+#@ updatemessage
+msgid "Give feedback"
+msgstr ""
+
+#: update-message.php:252
+#@ updatemessage
+msgid "Here is the plugins developped by the author"
+msgstr ""
+
+#: update-message.php:255
+#@ updatemessage
+msgid "Other possible plugins"
+msgstr ""
+
