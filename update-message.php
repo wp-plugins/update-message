@@ -2,7 +2,7 @@
 /*
 Plugin Name: Update Message
 Description: <p>Add an update box in posts. </p><p>This box can contain a message, for instance in order to point out that the post have been modified of to stress that the post in no longer up to date</p><p>The message can be configured direcly when editing a post. There is a box 'Update message' added on the left.</p><p>Plugin developped from the orginal plugin <a href="http://wordpress.org/extend/plugins/wp-update-message/">WP Update Message</a>. </p><p>This plugin is under GPL licence. </p>
-Version: 1.0.3
+Version: 1.0.4
 Author: SedLex
 Author Email: sedlex@sedlex.fr
 Framework Email: sedlex@sedlex.fr
@@ -38,7 +38,6 @@ class updatemessage extends pluginSedLex {
 		add_filter('the_content', array($this,'update_message_content'));
 		add_action('admin_menu', array($this, 'meta_box'));
 		add_shortcode( 'maj', array( $this, 'maj_shortcode' ) );
-
 	}
 	
 	/**
@@ -203,6 +202,9 @@ class updatemessage extends pluginSedLex {
 			<p><?php echo __('This plugin creates information box in posts/page to contain update information', $this->pluginID) ; ?></p>
 			<!--debut de personnalisation-->
 		<?php
+			
+			// On verifie que les droits sont corrects
+			$this->check_folder_rights( array() ) ; 
 			
 			//==========================================================================================
 			//

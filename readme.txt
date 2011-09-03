@@ -35,7 +35,10 @@ The message can be configured direcly when editing a post. There is a box 'Updat
 
 == Changelog ==
 
-= 1.0.2 =
+= 1.0.4 =
+* Ensure that folders and files permissions are correct for an adequate behavior
+
+= 1.0.3 =
 * The update message may be integrated with a shortcode [maj]
 * Enhance translations, feedback and other plugins
 
@@ -52,4 +55,4 @@ The message can be configured direcly when editing a post. There is a box 'Updat
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:434c029d5d37e906cf23e1bb8d66aa1f
+InfoVersion:ed313461ba00ab6c6284c9d4a6a24378
