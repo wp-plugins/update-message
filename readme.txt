@@ -35,6 +35,9 @@ The message can be configured direcly when editing a post. There is a box 'Updat
 
 == Changelog ==
 
+= 1.0.5 =
+* ZipArchive class has been suppressed and pclzip is used instead
+
 = 1.0.4 =
 * Ensure that folders and files permissions are correct for an adequate behavior
 
@@ -55,4 +58,4 @@ The message can be configured direcly when editing a post. There is a box 'Updat
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:ed313461ba00ab6c6284c9d4a6a24378
+InfoVersion:9fca371dd7802345548aad2abe7a55b6
