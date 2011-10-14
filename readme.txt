@@ -19,6 +19,18 @@ This box can contain a message, for instance in order to point out that the post
 
 The message can be configured direcly when editing a post. There is a box 'Update message' added on the left.
 
+= Localizations =
+
+* French translation (by me)
+
+= Features of the framework = 
+
+This plugin use SL framework.
+
+You may translate this plugin with an embedded feature which is very easy to use by any end-users (without any external tools / knowledge).
+
+You may also create a new plugin. You will download, from the plugin, an "hello World" plugin: You just have to fill the blank and follow the comments.
+
 == Installation ==
 
 1. Upload this folder to your plugin directory (for instance '/wp-content/plugins/')
@@ -34,6 +46,9 @@ The message can be configured direcly when editing a post. There is a box 'Updat
 3. Configuration of the update box in a post
 
 == Changelog ==
+
+= 1.0.6 =
+* Update of the core
 
 = 1.0.5 =
 * ZipArchive class has been suppressed and pclzip is used instead
@@ -58,4 +73,4 @@ The message can be configured direcly when editing a post. There is a box 'Updat
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:9fca371dd7802345548aad2abe7a55b6
+InfoVersion:8362fbb06c47d14f0e28067dbab22808
