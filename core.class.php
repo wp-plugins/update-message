@@ -1602,7 +1602,7 @@ if (!class_exists('pluginSedLex')) {
 			$root = "/".$plugin."/trunk/" ; 
 			$svn = new svnAdmin("svn.wp-plugins.org", 80, get_option('SL_framework_SVN_login', ""), get_option('SL_framework_SVN_password', "") ) ; 
 			
-			$result = $svn->prepareCommit($root,  true) ; 
+			$result = $svn->prepareCommit($root, $comment, true) ; 
 			if ($result['isOK']) {
 				echo __("Preparation of the sending done !", "SL_framework")."<br/>" ; 
 				echo "</p>\n" ; 
