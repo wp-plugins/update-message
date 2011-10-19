@@ -135,6 +135,21 @@ if (!class_exists("foldDiff")) {
 			$foldlist = array() ; 
 			$niveau = 1 ; 
 			
+			if ($withTick) {
+				echo "<p><input class='button-secondary action' onClick='allTick(true)' value='".__('Select all', 'SL_framework')."'>"  ; 
+				echo "&nbsp; <input class='button-secondary action' onClick='allTick(false)' value='".__('Un-select all', 'SL_framework')."'></p>"  ; 
+				echo "<script>\r\n";
+				echo "function allTick(val) {\r\n" ;
+				echo "     jQuery('.toDelete').attr('checked', val);\r\n" ; 
+				echo "     jQuery('.toDeleteFolder').attr('checked', val);\r\n" ; 
+				echo "     jQuery('.toPut').attr('checked', val);\r\n" ; 
+				echo "     jQuery('.toPutFolder').attr('checked', val);\r\n" ; 
+				echo "     jQuery('.toModify').attr('checked', val);\r\n" ; 
+				echo "		return false ; " ; 
+				echo "}\r\n" ; 
+				echo "</script>\r\n" ; 
+			}
+				
 			foreach ($rep_current as $rc) {
 				$color = "" ; 
 				$binary = "" ;
@@ -228,7 +243,10 @@ if (!class_exists("foldDiff")) {
 			}				
 			
 			$reduire .= "</script>\r\n" ; 
-
+			if ($withTick) {
+				echo "<p><input class='button-secondary action' onClick='allTick(true)' value='".__('Select all', 'SL_framework')."'>"  ; 
+				echo "&nbsp; <input class='button-secondary action' onClick='allTick(false)' value='".__('Un-select all', 'SL_framework')."'></p>"  ; 
+			}
 			if ($closeNotModifiedFolders) {
 				echo $reduire ; 
 			}

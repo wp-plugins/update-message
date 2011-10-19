@@ -1706,6 +1706,7 @@ if (!class_exists('pluginSedLex')) {
 			} else {
 				echo __("Error while preparing the sending !", "SL_framework")."<br/>" ; 
 				echo "</p>\n" ; 
+				echo $snv->printRawResult($result['raw_result']) ; 
 			
 			}
 							
@@ -1735,7 +1736,7 @@ if (!class_exists('pluginSedLex')) {
 				echo " <span style='color:#669900'>OK</span>" ; 
 			} else {
 				echo " <span style='color:#CC0000'>KO</span>" ; 
-				print_r($res['raw_result']) ; 
+				echo $snv->printRawResult($res['raw_result']) ; 
 			}
 			die() ; 
 		}
@@ -1761,7 +1762,7 @@ if (!class_exists('pluginSedLex')) {
 				echo " <span style='color:#669900'>OK</span>" ; 
 			} else {
 				echo " <span style='color:#CC0000'>KO</span>" ; 
-				print_r($res['raw_result']) ; 
+				echo $snv->printRawResult($res['raw_result']) ; 
 			}
 			die() ; 
 		}
@@ -1787,7 +1788,7 @@ if (!class_exists('pluginSedLex')) {
 				echo " <span style='color:#669900'>OK</span>" ; 
 			} else {
 				echo " <span style='color:#CC0000'>KO</span>" ; 
-				print_r($res['raw_result']) ; 
+				echo $snv->printRawResult($res['raw_result']) ; 
 			}
 			die() ; 
 		}
@@ -1814,7 +1815,7 @@ if (!class_exists('pluginSedLex')) {
 				echo " <span style='color:#669900'>".sprintf(__("The commit has ended successfully [ %s ]... You should received an email quickly !","SL_framework"), $res['commit_info'])."</span>" ; 
 			} else {
 				echo " <span style='color:#CC0000'>".__("The commit has ended but there is an error!","SL_framework")."</span>" ; 
-				print_r($res['raw_result']) ; 
+				echo $snv->printRawResult($res['raw_result']) ; 
 			}
 			die() ; 
 		}
