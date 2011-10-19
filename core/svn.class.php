@@ -168,7 +168,7 @@ if (!class_exists("svnAdmin")) {
 		* Set a commit comment
 		* 
 		* 
-		*/			
+		*/			 
 		
 		function setCommitComment($comment, $base, $credentials=false) {
 			$comment =  htmlentities($comment, ENT_QUOTES | ENT_IGNORE, "UTF-8");
@@ -236,28 +236,6 @@ if (!class_exists("svnAdmin")) {
 			$header .= $this->getChr(strlen($file)) ; 			// New data length
 			
 			//http://websvn.cyberspectrum.de/wsvn/tl_svn/trunk/system/modules/svnupdate/SubVersionMessageDiff.php
-			
-			$value = strlen($file) ; 
-			$temp = $this->popInt($this->getChr($value), 0) ; 
-			echo "#".$temp['int']."&".$value."<br>" ; 
-			$value = 3; 
-			$temp = $this->popInt($this->getChr($value), 0) ; 
-			echo "#".$temp['int']."&".$value."<br>" ; 
-			$value = 333 ; 
-			$temp = $this->popInt($this->getChr($value), 0) ; 
-			echo "#".$temp['int']."&".$value."<br>" ; 
-			$value = 33333 ; 
-			$temp = $this->popInt($this->getChr($value), 0) ; 
-			echo "#".$temp['int']."&".$value."<br>" ; 
-			$value = 127 ; 
-			$temp = $this->popInt($this->getChr($value), 0) ; 
-			echo "#".$temp['int']."&".$value."<br>" ; 
-			$value = 256 ; 
-			$temp = $this->popInt($this->getChr($value), 0) ; 
-			echo "#".$temp['int']."&".$value."<br>" ; 
-			$value = 104569 ; 
-			$temp = $this->popInt($this->getChr($value), 0) ; 
-			echo "#".$temp['int']."&".$value."<br>" ; 
 						
 			$result = $this->sendSVNRequest($this->host, $base, "PUT", $header.$instructions.$file, array("Content-Type: application/vnd.svn-svndiff"), $credentials) ; 		
 			if (substr($result['header']['Return-Code-HTTP'], 0, 1)=="2") { 
@@ -402,7 +380,7 @@ if (!class_exists("svnAdmin")) {
 					}
 					
 					// On crée les  fichiers en cache
-					if (@file_put_contents($store.$url, $content)) {
+					if (@file_put_contents($store.$url, $content)===false) {
 						$info[] = array("url"=>$url, "ok"=>true, "folder"=>false , "size"=>strlen($content) )  ; 
 					} else {
 						$info[] = array("url"=>$url, "ok"=>false, "folder"=>false, "size" =>strlen($content) )  ; 

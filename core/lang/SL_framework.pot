@@ -504,6 +504,26 @@ msgstr ""
 msgid "The rollback has ended ..."
 msgstr ""
 
+#: core/utils.class.php:123
+#@ SL_framework
+msgid "KB"
+msgstr ""
+
+#: core/utils.class.php:127
+#@ SL_framework
+msgid "MB"
+msgstr ""
+
+#: core/utils.class.php:130
+#@ SL_framework
+msgid "GB"
+msgstr ""
+
+#: core/otherplugins.class.php:55
+#@ SL_framework
+msgid "Homepage:"
+msgstr ""
+
 #: core/parameters.class.php:129
 #@ SL_framework
 msgid "Error: the submitted value is not an integer and thus, the parameter has not been updated!"
@@ -534,95 +554,9 @@ msgstr ""
 msgid "Parameters have been updated successfully !"
 msgstr ""
 
-#: core/utils.class.php:123
-#@ SL_framework
-msgid "KB"
-msgstr ""
-
-#: core/utils.class.php:127
-#@ SL_framework
-msgid "MB"
-msgstr ""
-
-#: core/utils.class.php:130
-#@ SL_framework
-msgid "GB"
-msgstr ""
-
-#: core/feedback.class.php:39
-#: core/translation.class.php:438
-#: core/translation.class.php:520
-#@ SL_framework
-msgid "Your name:"
-msgstr ""
-
-#: core/feedback.class.php:40
-#@ SL_framework
-msgid "Your email (for response):"
-msgstr ""
-
-#: core/feedback.class.php:41
-#@ SL_framework
-msgid "Your comments:"
-msgstr ""
-
-#: core/feedback.class.php:43
-#@ SL_framework
-msgid "Please note that additional information on your wordpress installation will be sent to the author in order to help the debugging if needed (such as : the wordpress version, the installed plugins, etc.)"
-msgstr ""
-
-#: core/feedback.class.php:44
-#@ SL_framework
-msgid "Send feedback"
-msgstr ""
-
-#: core/feedback.class.php:49
-#@ SL_framework
-msgid "No email have been provided for the author of this plugin. Therefore, the feedback is impossible"
-msgstr ""
-
-#: core/feedback.class.php:135
-#@ SL_framework
-msgid "The feedback has been sent"
-msgstr ""
-
-#: core/feedback.class.php:139
-#: core/translation.class.php:660
-#@ SL_framework
-msgid "An error occured sending the email."
-msgstr ""
-
-#: core/feedback.class.php:139
-#: core/translation.class.php:660
-#@ SL_framework
-msgid "Make sure that your wordpress is able to send email."
-msgstr ""
-
-#: core/otherplugins.class.php:55
-#@ SL_framework
-msgid "Homepage:"
-msgstr ""
-
-#: core/svn.class.php:650
+#: core/svn.class.php:628
 #@ SL_framework
 msgid "Your credentials do not seem to be correct. Please check them!"
-msgstr ""
-
-#: core/folder_diff.class.php:139
-#: core/folder_diff.class.php:247
-#@ SL_framework
-msgid "Select all"
-msgstr ""
-
-#: core/folder_diff.class.php:140
-#: core/folder_diff.class.php:248
-#@ SL_framework
-msgid "Un-select all"
-msgstr ""
-
-#: core/popup.class.php:71
-#@ SL_framework
-msgid "Close popup"
 msgstr ""
 
 #: core/translation.class.php:256
@@ -723,6 +657,13 @@ msgid "Translation"
 msgstr ""
 
 #: core/translation.class.php:438
+#: core/translation.class.php:520
+#: core/feedback.class.php:39
+#@ SL_framework
+msgid "Your name:"
+msgstr ""
+
+#: core/translation.class.php:438
 #@ SL_framework
 msgid "(if your name/pseudo is already in the list, there is no need to fill this input)"
 msgstr ""
@@ -758,6 +699,18 @@ msgstr ""
 msgid "The translation %s have been sent"
 msgstr ""
 
+#: core/translation.class.php:660
+#: core/feedback.class.php:139
+#@ SL_framework
+msgid "An error occured sending the email."
+msgstr ""
+
+#: core/translation.class.php:660
+#: core/feedback.class.php:139
+#@ SL_framework
+msgid "Make sure that your wordpress is able to send email."
+msgstr ""
+
 #: core/translation.class.php:808
 #: core/translation.class.php:811
 #@ SL_framework
@@ -780,6 +733,53 @@ msgstr ""
 #: core/translation.class.php:820
 #@ SL_framework
 msgid "%s file has been created from this file"
+msgstr ""
+
+#: core/folder_diff.class.php:139
+#: core/folder_diff.class.php:247
+#@ SL_framework
+msgid "Select all"
+msgstr ""
+
+#: core/folder_diff.class.php:140
+#: core/folder_diff.class.php:248
+#@ SL_framework
+msgid "Un-select all"
+msgstr ""
+
+#: core/feedback.class.php:40
+#@ SL_framework
+msgid "Your email (for response):"
+msgstr ""
+
+#: core/feedback.class.php:41
+#@ SL_framework
+msgid "Your comments:"
+msgstr ""
+
+#: core/feedback.class.php:43
+#@ SL_framework
+msgid "Please note that additional information on your wordpress installation will be sent to the author in order to help the debugging if needed (such as : the wordpress version, the installed plugins, etc.)"
+msgstr ""
+
+#: core/feedback.class.php:44
+#@ SL_framework
+msgid "Send feedback"
+msgstr ""
+
+#: core/feedback.class.php:49
+#@ SL_framework
+msgid "No email have been provided for the author of this plugin. Therefore, the feedback is impossible"
+msgstr ""
+
+#: core/feedback.class.php:135
+#@ SL_framework
+msgid "The feedback has been sent"
+msgstr ""
+
+#: core/popup.class.php:71
+#@ SL_framework
+msgid "Close popup"
 msgstr ""
 
 #: core/svn.class.old.php:57
