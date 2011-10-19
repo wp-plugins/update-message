@@ -73,4 +73,4 @@ You may also create a new plugin. You will download, from the plugin, an "hello 
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:32b0b98f3da6ca74dcf6cfec8b4cb53f
+InfoVersion:0f8cb90c35cf8188ca1c32cf70bfd4af
