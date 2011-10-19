@@ -66,7 +66,6 @@ function svnToRepo(plugin) {
 	jQuery('.toPutFolder').attr('disabled', true);
 	jQuery('.toDeleteFolder').attr('disabled', true);
 	
-	comment = jQuery("#svn_comment").val() ; 
 	list = new Array() ; 	
 	
 	tick = jQuery('.toModify') ; 
@@ -115,7 +114,60 @@ function svnToRepo(plugin) {
 }
 
 
+function svnToLocal(plugin) {
+	jQuery("#wait_svn").show();
+	jQuery("#confirm_to_svn").hide() ; 
+	jQuery('.toModify').attr('disabled', true);
+	jQuery('.toPut').attr('disabled', true);
+	jQuery('.toDelete').attr('disabled', true);
+	jQuery('.toPutFolder').attr('disabled', true);
+	jQuery('.toDeleteFolder').attr('disabled', true);
+	
+	list = new Array() ; 	
+	
+	tick = jQuery('.toModify') ; 
+	for (var i=0 ; i<tick.length ; i++) {
+		if (tick.eq(i).attr('checked')=='checked') {
+			list.push(new Array(tick.eq(i).val(), 'modify')) ; 
+		}
+	}
+	tick = jQuery('.toPut') ; 
+	for (var i=0 ; i<tick.length ; i++) {
+		if (tick.eq(i).attr('checked')=='checked') {
+			list.push(new Array(tick.eq(i).val(), 'add')) ; 
+		}
+	}
+	tick = jQuery('.toDelete') ; 
+	for (var i=0 ; i<tick.length ; i++) {
+		if (tick.eq(i).attr('checked')=='checked') {
+			list.push(new Array(tick.eq(i).val(), 'delete')) ; 
+		}
+	}
+	tick = jQuery('.toPutFolder') ; 
+	for (var i=0 ; i<tick.length ; i++) {
+		if (tick.eq(i).attr('checked')=='checked') {
+			list.push(new Array(tick.eq(i).val(), 'add_folder')) ; 
+		}
+	}
+	tick = jQuery('.toDeleteFolder') ; 
+	for (var i=0 ; i<tick.length ; i++) {
+		if (tick.eq(i).attr('checked')=='checked') {
+			list.push(new Array(tick.eq(i).val(), 'delete_folder')) ; 
+		}
+	}
+	
+	var arguments = {
+		action: 'svn_to_local', 
+		plugin: plugin, 
+		files: list
+	} 
 
+	//POST the data and append the results to the results div
+	jQuery.post(ajaxurl, arguments, function(response) {
+		jQuery("#wait_svn").hide();
+		jQuery("#console_svn").html(response);
+	});    
+}
 
 
 

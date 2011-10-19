@@ -99,7 +99,7 @@ if (!class_exists("svnAdmin")) {
 		}
 		
 		/** ====================================================================================================================================================
-		* Get getRepository UUID
+		* Get getRepository VCC
 		* 
 		* 
 		*/			
@@ -110,6 +110,24 @@ if (!class_exists("svnAdmin")) {
 				$xml = $this->xmlContentParse($result['content']) ;
 				$vcc = $xml->getElementsByTagNameNS ( 'DAV:' , 'version-controlled-configuration' )->item(0)->textContent ;
 				return array("isOK" => true, "vcc" => $vcc, "raw_result" => $result) ;
+			} else {
+				return array("isOK" => false, "raw_result" => $result) ;			
+			}
+		}
+		
+		/** ====================================================================================================================================================
+		* Get getRepository Revision
+		* 
+		* 
+		*/			
+		
+		function getRevision($base, $credentials=false) {
+			$result = $this->sendSVNRequest($this->host, $base, "PROPFIND", "<?xml version=\"1.0\" encoding=\"utf-8\"?><propfind xmlns=\"DAV:\"><prop><version-name xmlns=\"DAV:\"/></prop></propfind>", array("Depth: 0"), $credentials) ; 		
+			
+			if (substr($result['header']['Return-Code-HTTP'], 0, 1)=="2") { 
+				$xml = $this->xmlContentParse($result['content']) ;
+				$rev = $xml->getElementsByTagNameNS ( 'DAV:' , 'version-name' )->item(0)->textContent ;
+				return array("isOK" => true, "revision" => $rev, "raw_result" => $result) ;
 			} else {
 				return array("isOK" => false, "raw_result" => $result) ;			
 			}
@@ -205,7 +223,6 @@ if (!class_exists("svnAdmin")) {
 			$file = file_get_contents($file) ; 
 			$header = "SVN".chr(0) ; // Version 0 of the SVN diff protocol (see https://svn.apache.org/repos/asf/subversion/trunk/notes/svndiff)
 			
-			
 			// Instructions
 			$instructions = "" ; 
 			$instructions .= chr(bindec("10"."000000")) ; 		// Copy from the new file
@@ -219,12 +236,34 @@ if (!class_exists("svnAdmin")) {
 			$header .= $this->getChr(strlen($file)) ; 			// New data length
 			
 			//http://websvn.cyberspectrum.de/wsvn/tl_svn/trunk/system/modules/svnupdate/SubVersionMessageDiff.php
+			
+			$value = strlen($file) ; 
+			$temp = $this->popInt($this->getChr($value), 0) ; 
+			echo "#".$temp['int']."&".$value."<br>" ; 
+			$value = 3; 
+			$temp = $this->popInt($this->getChr($value), 0) ; 
+			echo "#".$temp['int']."&".$value."<br>" ; 
+			$value = 333 ; 
+			$temp = $this->popInt($this->getChr($value), 0) ; 
+			echo "#".$temp['int']."&".$value."<br>" ; 
+			$value = 33333 ; 
+			$temp = $this->popInt($this->getChr($value), 0) ; 
+			echo "#".$temp['int']."&".$value."<br>" ; 
+			$value = 127 ; 
+			$temp = $this->popInt($this->getChr($value), 0) ; 
+			echo "#".$temp['int']."&".$value."<br>" ; 
+			$value = 256 ; 
+			$temp = $this->popInt($this->getChr($value), 0) ; 
+			echo "#".$temp['int']."&".$value."<br>" ; 
+			$value = 104569 ; 
+			$temp = $this->popInt($this->getChr($value), 0) ; 
+			echo "#".$temp['int']."&".$value."<br>" ; 
 						
 			$result = $this->sendSVNRequest($this->host, $base, "PUT", $header.$instructions.$file, array("Content-Type: application/vnd.svn-svndiff"), $credentials) ; 		
 			if (substr($result['header']['Return-Code-HTTP'], 0, 1)=="2") { 
-				return array("isOK" => true, "raw_result" => $result) ;	
+				return array("isOK" => true, "raw_result" => $result, "svn_header" => "HEADER : ".$this->asc2bin("SVN".chr(0))." - SOURCE OFFSET : ".$this->asc2bin($this->getChr(0))." - SOURCE LENGTH : ".$this->asc2bin($this->getChr(0) )." - TARGET LENGTH : ".$this->asc2bin($this->getChr(strlen($file))) ." - INSTRUCTION LENGTH : ".$this->asc2bin($this->getChr(strlen($instructions)))." - NEW DATA LENGTH : ".$this->asc2bin($this->getChr(strlen($file)))." - INSTRUCTIONS : ".$this->asc2bin($instructions) ) ;	
 			} else {
-				return array("isOK" => false, "raw_result" => $result) ;	
+				return array("isOK" => false, "raw_result" => $result, "svn_header" => "HEADER : ".$this->asc2bin("SVN".chr(0))." - SOURCE OFFSET : ".$this->asc2bin($this->getChr(0))." - SOURCE LENGTH : ".$this->asc2bin($this->getChr(0) )." - TARGET LENGTH : ".$this->asc2bin($this->getChr(strlen($file))) ." - INSTRUCTION LENGTH : ".$this->asc2bin($this->getChr(strlen($instructions)))." - NEW DATA LENGTH : ".$this->asc2bin($this->getChr(strlen($file)))." - INSTRUCTIONS : ".$this->asc2bin($instructions) ) ;	
 			}
 		} 
 		
@@ -250,8 +289,19 @@ if (!class_exists("svnAdmin")) {
 			return $result ; 
 		}
 		
-	
-		
+		function asc2bin ($ascii) {
+			while ( strlen($ascii) > 0 ){
+				$byte = "";
+				$i = 0;
+				$byte = substr($ascii, 0, 1);
+				while ( $byte!= chr($i) ) { $i++; }
+				$byte = base_convert($i, 10, 2);
+				$byte = str_repeat("0", (8 - strlen($byte)) ) . $byte; /* This is an endian (architexture) specific line, you may need to alter it. */
+				$ascii = substr($ascii, 1);
+				$binary .= $byte." ";
+			}
+			return $binary;
+		} 
 				
 		/** ====================================================================================================================================================
 		* Merge all
@@ -281,9 +331,9 @@ if (!class_exists("svnAdmin")) {
 		function getFile($base_file, $store, $credentials=true) {
 			
 			$replacements = array('%20', '%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%2B', '%24', '%2C', '%3F', '%25', '%23', '%5B', '%5D');
-    		$entities = array(' ', '!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "+", "$", ",", "?", "%", "#", "[", "]");
+			$entities = array(' ', '!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "+", "$", ",", "?", "%", "#", "[", "]");
     		
-    		$base_file = str_replace($entities, $replacements, $base_file);
+			$base_file = str_replace($entities, $replacements, $base_file);
 
 			$content = @file_get_contents("http://".$this->host.$base_file) ; 
 			if ($content!==false) {
@@ -295,6 +345,96 @@ if (!class_exists("svnAdmin")) {
 			}
 			
 		}
+		
+		/** ====================================================================================================================================================
+		* Get all files of the repository
+		* 
+		* 
+		*/			
+		
+		function getAllFiles($base, $vcc, $rev, $store, $credentials=true) {
+			$result = $this->sendSVNRequest($this->host, $vcc, "REPORT", "<?xml version=\"1.0\" encoding=\"utf-8\"?><S:update-report send-all=\"true\" xmlns:S=\"svn:\" xmlns:D=\"DAV:\"><S:src-path>http://".$this->host.":".$this->port.$base."</S:src-path><S:target-revision>".$rev."</S:target-revision><S:depth>infinity</S:depth><S:entry rev=\"".$rev."\" depth=\"infinity\"  start-empty=\"true\"></S:entry></S:update-report>", array(), $credentials) ; 		
+			
+			if (substr($result['header']['Return-Code-HTTP'], 0, 1)=="2") { 		
+				$xml = $this->xmlContentParse($result['content']) ;
+				$info = array() ; 
+				
+				// On s'occupe des folders
+				$dir = $xml->getElementsByTagNameNS ( 'svn:' , 'add-directory' );
+				foreach ($dir as $d) {
+					$url = $d->getElementsByTagNameNS ( 'DAV:' , 'checked-in' )->item(0)->firstChild->textContent ; 
+					
+					$tmp = explode($base, $url, 2) ; 
+					if (count($tmp)==2) {
+						$url = $tmp[1] ; 
+					}
+					// On crée les folders
+					if (@mkdir($store.$url, 0755, true)) {
+						$info[] = array("url"=>$url, "ok"=>true, "folder"=>true)  ; 
+					} else {
+						$info[] = array("url"=>$url, "ok"=>false, "folder"=>true)  ; 
+					}
+				}
+				
+				// On s'occupe des fichiers
+				$file = $xml->getElementsByTagNameNS ( 'svn:' , 'add-file' );
+				foreach ($file as $f) {
+					$url = $f->getElementsByTagNameNS ( 'DAV:' , 'checked-in' )->item(0)->firstChild->textContent ; 
+					// on recupere le contenu du fichier
+					$content = $f->getElementsByTagNameNS ( 'svn:' , 'txdelta' )->item(0)->textContent ; 
+					$content = base64_decode($content) ; 
+					// On supprime l'entete SVN binaire (voir https://svn.apache.org/repos/asf/subversion/trunk/notes/svndiff)
+					$offset = 4 ; // on passe le PHP\0
+					$val = $this->popInt($content, $offset) ; 			// Read source view offset
+					$val = $this->popInt($content, $val['new_offset']) ; 		// Read source view length
+					$val = $this->popInt($content, $val['new_offset']) ; 		// Read target view length
+					$val = $this->popInt($content, $val['new_offset']) ; 		// Read instructions length
+					$val = $this->popInt($content, $val['new_offset']) ; 		// New data length
+					$data_length = $val['int'] ;
+					
+					$content = substr($content, -$data_length) ; 
+					if ($data_length==0)
+						$content = "" ; 
+					
+					$tmp = explode($base, $url, 2) ; 
+					if (count($tmp)==2) {
+						$url = $tmp[1] ; 
+					}
+					
+					// On crée les  fichiers en cache
+					if (@file_put_contents($store.$url, $content)) {
+						$info[] = array("url"=>$url, "ok"=>true, "folder"=>false , "size"=>strlen($content) )  ; 
+					} else {
+						$info[] = array("url"=>$url, "ok"=>false, "folder"=>false, "size" =>strlen($content) )  ; 
+					}
+				}
+
+				return array("isOK" => true, "info" => $info, "raw_result" => $result) ;	
+			} else {
+				return array("isOK" => false, "raw_result" => $result) ;	
+			}	
+			
+		}
+		
+		function pop($string, $offset){
+                        $res=substr($string, $offset, 1);
+			return array('byte'=>$res, 'new_offset'=>$offset+1) ;
+		}
+		
+		function popInt($string, $offset) {
+			$n=0;
+			while(true){
+				$res = $this->pop($string, $offset) ;
+				$c = $res['byte'] ; 
+				$offset =  $res['new_offset'] ; 
+				$c=ord($c);
+				$n = (($n << 7)) | ($c & 0x7f);
+				if (!($c & 0x80))
+					break;
+			}
+			return array('int'=>$n, 'new_offset'=>$offset) ;
+		}
+
 		
 		/** ====================================================================================================================================================
 		* Put folder in the repository
@@ -506,12 +646,11 @@ if (!class_exists("svnAdmin")) {
 		*/			
 		
 		function printRawResult($raw) {
-			return nl2br(htmlentities(print_r($raw, true))) ;  
+			if ($raw['header']['Return-Code-HTTP']=='401'){
+				return "<span style='color:#CC0000'>".__("Your credentials do not seem to be correct. Please check them!", "SL_framework")."</span>" ; 
+			}
+			return "<span style='color:#CC0000'>".nl2br(str_replace(" ", "&nbsp;", htmlentities(print_r($raw, true))))."</span>" ;  
 		}
-		
-
-
-		
 	}
 }
 

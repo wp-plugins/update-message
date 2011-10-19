@@ -54,7 +54,9 @@ if (!class_exists('pluginSedLex')) {
 			add_action('wp_ajax_svn_show_popup', array($this,'svn_show_popup')) ; 
 			add_action('wp_ajax_svn_get_file', array($this,'svn_get_file')) ; 
 			add_action('wp_ajax_svn_compare_localRepo', array($this,'svn_compare_localRepo')) ; 
+			add_action('wp_ajax_svn_compare_repoLocal', array($this,'svn_compare_repoLocal')) ; 
 			add_action('wp_ajax_svn_to_repo', array($this,'svn_to_repo')) ; 
+			add_action('wp_ajax_svn_to_local', array($this,'svn_to_local')) ; 
 			add_action('wp_ajax_svn_put_file_in_repo', array($this,'svn_put_file_in_repo')) ; 
 			add_action('wp_ajax_svn_merge', array($this,'svn_merge')) ; 
 			add_action('wp_ajax_svn_put_folder_in_repo', array($this,'svn_put_folder_in_repo')) ; 
@@ -786,15 +788,18 @@ if (!class_exists('pluginSedLex')) {
 														$info_core .=  "<ul>" ; 
 														
 														$md5 = md5($plugin_name." to_local") ; 
-														$info_core .=  "<li style='padding-left:2em; '>" ; 
+														$info_core .=  "<li style='padding-left:3em; '>" ; 
 														$info_core .= "<img id='wait_svn_".$md5."' src='".WP_PLUGIN_URL.'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/ajax-loader.gif' style='display:none;'>" ; 
+														$info_core .= "<img src='".WP_PLUGIN_URL.'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/arrow-left.png'>&nbsp;" ; 
 														$info_core .= "<a href='#' onClick='showSvnPopup(\"".$md5."\", \"".$plugin_name."\", \"to_local\"); return false;'>".__("Overwrite the local plugin files with files stored the SVN repository", 'SL_framework')."</a>" ;
 														$info_core .=  "</li>" ;
 														
 														$md5 = md5($plugin_name." to_repo") ; 
-														$info_core .= "<li style='padding-left:2em; '>" ; 
+														$info_core .= "<li style='padding-left:3em; '>" ; 
 														$info_core .= "<img id='wait_svn_".$md5."' src='".WP_PLUGIN_URL.'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/ajax-loader.gif' style='display:none;'>" ; 
+														$info_core .= "<img src='".WP_PLUGIN_URL.'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/arrow-right.png'>&nbsp;" ; 
 														$info_core .=  "<a href='#' onClick='showSvnPopup(\"".$md5."\", \"".$plugin_name."\", \"to_repo\"); return false;'>".__("Update the SVN repository with your current local plugin files", 'SL_framework')."</a>" ; 
+														$info_core .=  " (<a href='#' onClick='showSvnPopup(\"".$md5."\", \"".$plugin_name."\", \"to_repo_quick\"); return false;'>".__("Faster version", 'SL_framework')."</a>)" ; 
 														$info_core .=  "</li>" ; 
 														
 														$info_core .=  "</ul>" ; 
@@ -1445,71 +1450,123 @@ if (!class_exists('pluginSedLex')) {
 			$sens = $_POST['sens'];
 
 			if ($sens=="to_repo") {
+				$title = sprintf(__('Update the SVN repository %s with your current local plugin files (slower version)', 'SL_framework'),'<em>'.$plugin.'</em>') ;
+			}
+			if ($sens=="to_repo_quick") {
 				$title = sprintf(__('Update the SVN repository %s with your current local plugin files', 'SL_framework'),'<em>'.$plugin.'</em>') ;
 			}
 			if ($sens=="to_local") {
 				$title = sprintf(__('Overwrite the local plugin %s files with files stored the SVN repository', 'SL_framework'),'<em>'.$plugin.'</em>') ; ;
 			}
-			
 			ob_start() ; 
-			echo "<div id='svn_div'>" ; 
-			
 			// SVN preparation
 			$local_cache = WP_CONTENT_DIR."/sedlex/svn" ; 
-			Utils::rm_rec($local_cache."/".$plugin) ; 
-
+			Utils::rm_rec($local_cache."/".$plugin) ;
 			$svn = new svnAdmin("svn.wp-plugins.org", 80, get_option('SL_framework_SVN_login', ""), get_option('SL_framework_SVN_password', "") ) ; 
-			// On met a jour le cache local !
-			echo "<h3>".__('Updating the local cache', 'SL_framework')."</h3>" ; 
-			echo "<p>".__('To be sure that you compare the local plugin with the latest repoository files, it is necessary to download it locally. Please wait during the update...', 'SL_framework')."</p>" ; 
-			
-			$files = $svn->listFilesInRepository("/".$plugin."/trunk/", true) ; 
-			
-			if ($files['isOK']==true) {
-				echo "<p class='console' id='svn_console'>\n" ; 
-				echo sprintf(__('Update of the files of the %s plugin in progress (%s files)', 'SL_framework'), "<b>".$plugin."</b>", count($files['list']) )."<br/>\n" ; 
-				echo "</p>\n" ; 
-				echo "<script id='svn_get_files'>" ; 
-				$nbfiles = 0 ;
-				$tabulation = "" ; 
-				$i = 0 ; 
-				foreach ($files['list'] as $f) {
-					$i++ ; 
-					if ($f['folder']==true) {
-						@mkdir($local_cache.$f['href'],0777, true) ; 
-						if (is_dir($local_cache.$f['href'])) 
-							echo $tabulation . "jQuery(\"#svn_console\").append(\"".$i.". ".str_replace('/'.$plugin."/trunk", '', $f['href'])." <span style='color:#669900'>OK</span> (".__('folder created', 'SL_framework').")<br/>\");\r\n" ; 
-						else 
-							echo $tabulation . "jQuery(\"#svn_console\").append(\"".$i.". ".str_replace('/'.$plugin."/trunk", '', $f['href'])." <span style='color:#CC0000'>KO</span> (".__('folder creation has failed !', 'SL_framework').")<br/>\");\r\n" ; 
-					} else {
-						echo $tabulation . "jQuery(\"#svn_console\").append(\"".$i.". ".str_replace('/'.$plugin."/trunk", '', $f['href'])."\");\r\n" ; 
-						echo $tabulation . "var arguments = {action: 'svn_get_file', from : '".$f['href']."', to : '".$local_cache.$f['href']."' }\r\n" ;  
-						//POST the data and append the results to the results div
-						echo $tabulation . "jQuery.post(ajaxurl, arguments, function(response) { jQuery(\"#svn_console\").append(response+' (".floor(100*$i/count($files['list']))."%)<br/>');\r\n" ;
-						echo $tabulation . "jQuery('#innerPopupForm').animate({scrollTop: jQuery('#innerPopupForm')[0].scrollHeight}, 10);\r\n" ; 
-						$nbfiles ++ ; 
-						$tabulation .= "  " ; 
-					}
-				}
-				// we call the comparison callback
-				echo $tabulation . "window.setTimeout( function() { var arguments = {action: 'svn_compare_localRepo', plugin : '".$plugin."'}; jQuery.post(ajaxurl, arguments, function(response) { jQuery(\"#innerPopupForm\").html(response); }) ; } , 3000);\r\n" ; 
 				
-				// FIN
-				for ($i=0 ; $i<$nbfiles ; $i++) {
-					$tabulation = substr($tabulation, 0, -2) ; 
-					echo $tabulation . "});\r\n" ; 
+			if (($sens=="to_repo_quick")||($sens=="to_local_quick")) {
+				$revision = $svn->getRevision("/".$plugin."/trunk", true) ;
+				$vcc = $svn->getVCC("/".$plugin."/trunk", true) ;
+				$revision = $revision['revision'] ; 
+				$vcc = $vcc['vcc'] ; 
+				
+				$res = $svn->getAllFiles("/".$plugin."/trunk", $vcc, $revision, $local_cache."/".$plugin, true) ; 
+				if ($res['isOK']) {
+					echo "<div class='console' id='svn_console'>\n" ; 
+					foreach ($res['info'] as $inf) {
+						$i++ ; 
+						if ($inf['folder']) {
+							if ($inf['ok']) {
+								echo $i.". ".$inf['url']." <span style='color:#669900'>OK</span> (".__('folder created', 'SL_framework').")<br/>" ; 
+							} else {
+								echo $i.". ".$inf['url']." <span style='color:#CC0000'>KO</span> (".__('folder creation has failed !', 'SL_framework').")<br/>" ; 						
+							}
+						} else {
+							if ($inf['ok']) {
+								echo $i.". ".$inf['url']." <span style='color:#669900'>OK</span> (".sprintf(__("%s bytes transfered", 'SL_framework'), $inf['size']).")<br/>" ; 
+							} else {
+								echo $i.". ".$inf['url']." <span style='color:#CC0000'>KO</span><br/>" ; 						
+							}						
+						}
+					}
+					echo "</div>\n" ; 	
+					echo "<script>\n" ; 	
+					echo "jQuery('#innerPopupForm').animate({scrollTop: jQuery('#innerPopupForm')[0].scrollHeight}, 10);\r\n" ; 
+					if ($sens=="to_repo_quick") {
+						echo "window.setTimeout( function() { var arguments = {action: 'svn_compare_localRepo', plugin : '".$plugin."'}; jQuery.post(ajaxurl, arguments, function(response) { jQuery(\"#innerPopupForm\").html(response); }) ; } , 3000);\r\n" ; 
+					}
+					if ($sens=="to_local_quick") {
+						echo "window.setTimeout( function() { var arguments = {action: 'svn_compare_repoLocal', plugin : '".$plugin."'}; jQuery.post(ajaxurl, arguments, function(response) { jQuery(\"#innerPopupForm\").html(response); }) ; } , 3000);\r\n" ; 
+					}
+					echo "</script>\n" ; 	
+					
+				} else {
+					echo "<div class='console'>\n" ; 
+					echo sprintf(__('An error occurred when listing the files of the %s plugin ! Sorry ...', 'SL_framework'), "<b>".$plugin."</b>")."<br/>\n" ; 
+					$svn->printRawResult($files['raw_result']) ; 
+					echo "</div>\n" ; 				
 				}
-				echo "</script>" ; 
-			} else {
-				echo "<p class='console'>\n" ; 
-				echo sprintf(__('An error occurred when listing the files of the %s plugin ! Sorry ...', 'SL_framework'), "<b>".$plugin."</b>")."<br/>\n" ; 
-				echo "#</br>" ; 
-				print_r($files) ; 
-				echo "<br/>#<br/>" ; 
-				echo "</p>\n" ; 
+				
+			} else if (($sens=="to_repo")||($sens=="to_local")) {
+				
+				echo "<div id='svn_div'>" ; 
+				
+				// On met a jour le cache local !
+				echo "<h3>".__('Updating the local cache', 'SL_framework')."</h3>" ; 
+				echo "<p>".__('To be sure that you compare the local plugin with the latest repoository files, it is necessary to download it locally. Please wait during the update...', 'SL_framework')."</p>" ; 
+				
+				$files = $svn->listFilesInRepository("/".$plugin."/trunk/", true) ; 
+				
+				if ($files['isOK']==true) {
+					echo "<div class='console' id='svn_console'>\n" ; 
+					echo sprintf(__('Update of the files of the %s plugin in progress (%s files)', 'SL_framework'), "<b>".$plugin."</b>", count($files['list']) )."<br/>\n" ; 
+					echo "</div>\n" ; 
+					echo "<script id='svn_get_files'>" ; 
+					$nbfiles = 0 ;
+					$tabulation = "" ; 
+					$i = 0 ; 
+					foreach ($files['list'] as $f) {
+						$i++ ; 
+						if ($f['folder']==true) {
+							@mkdir($local_cache.str_replace('/trunk', '', $f['href']),0777, true) ; 
+							if (is_dir($local_cache.str_replace('/trunk', '', $f['href']))) 
+								echo $tabulation . "jQuery(\"#svn_console\").append(\"".$i.". ".str_replace('/'.$plugin."/trunk", '', $f['href'])." <span style='color:#669900'>OK</span> (".__('folder created', 'SL_framework').")<br/>\");\r\n" ; 
+							else 
+								echo $tabulation . "jQuery(\"#svn_console\").append(\"".$i.". ".str_replace('/'.$plugin."/trunk", '', $f['href'])." <span style='color:#CC0000'>KO</span> (".__('folder creation has failed !', 'SL_framework').")<br/>\");\r\n" ; 
+						} else {
+							echo $tabulation . "jQuery(\"#svn_console\").append(\"".$i.". ".str_replace('/'.$plugin."/trunk", '', $f['href'])."\");\r\n" ; 
+							echo $tabulation . "var arguments = {action: 'svn_get_file', from : '".$f['href']."', to : '".$local_cache.str_replace('/trunk', '', $f['href'])."' }\r\n" ;  
+							//POST the data and append the results to the results div
+							echo $tabulation . "jQuery.post(ajaxurl, arguments, function(response) { jQuery(\"#svn_console\").append(response+' (".floor(100*$i/count($files['list']))."%)<br/>');\r\n" ;
+							echo $tabulation . "jQuery('#innerPopupForm').animate({scrollTop: jQuery('#innerPopupForm')[0].scrollHeight}, 10);\r\n" ; 
+							$nbfiles ++ ; 
+							$tabulation .= "  " ; 
+						}
+					}
+					// we call the comparison callback
+					if ($sens=="to_repo") {
+						echo $tabulation . "window.setTimeout( function() { var arguments = {action: 'svn_compare_localRepo', plugin : '".$plugin."'}; jQuery.post(ajaxurl, arguments, function(response) { jQuery(\"#innerPopupForm\").html(response); }) ; } , 3000);\r\n" ; 
+					}
+					
+					if ($sens=="to_local") {
+						echo $tabulation . "window.setTimeout( function() { var arguments = {action: 'svn_compare_repoLocal', plugin : '".$plugin."'}; jQuery.post(ajaxurl, arguments, function(response) { jQuery(\"#innerPopupForm\").html(response); }) ; } , 3000);\r\n" ; 
+					}
+					// FIN
+					for ($i=0 ; $i<$nbfiles ; $i++) {
+						$tabulation = substr($tabulation, 0, -2) ; 
+						echo $tabulation . "});\r\n" ; 
+					}
+					echo "</script>" ; 
+				} else {
+					echo "<div class='console'>\n" ; 
+					echo sprintf(__('An error occurred when listing the files of the %s plugin ! Sorry ...', 'SL_framework'), "<b>".$plugin."</b>")."<br/>\n" ; 
+					$svn->printRawResult($files['raw_result']) ; 
+					echo "</div>\n" ; 
+				}
+				
+				echo "</div>" ; 
 			}
 			
-			echo "</div>" ; 
 			$content = ob_get_clean() ; 	
 
 			$popup = new popupAdmin($title, $content, "") ; 
@@ -1557,9 +1614,13 @@ if (!class_exists('pluginSedLex')) {
 			
 			$local_cache = WP_CONTENT_DIR."/sedlex/svn" ; 
 			
+			$info_core = $this->checkCoreOfThePlugin(WP_PLUGIN_DIR.'/'.$plugin ."/core.php") ; 
+			$hash_plugin = $this->update_hash_plugin(WP_PLUGIN_DIR."/".$plugin) ; 
+			
 			echo "<h3>".__('Browsing the modifications', 'SL_framework')."</h3>" ; 
+			echo "<p>".sprintf(__('Comparing %s with %s', 'SL_framework'), "<em>".WP_PLUGIN_DIR."/".$plugin."/</em>", "<em>".$local_cache."/".$plugin."/"."</em>")."</p>" ; 
 			$folddiff = new foldDiff() ; 
-			$result = $folddiff->diff(WP_PLUGIN_DIR."/".$plugin, $local_cache."/".$plugin."/trunk") ; 
+			$result = $folddiff->diff(WP_PLUGIN_DIR."/".$plugin, $local_cache."/".$plugin) ; 
 			$folddiff->render(true, true) ; 
 			
 			// Confirmation asked
@@ -1580,7 +1641,40 @@ if (!class_exists('pluginSedLex')) {
 			die() ; 
 		}
 		
+		/** ====================================================================================================================================================
+		* Callback for comparing a plugin with the repo cache
+		* 
+		* @access private
+		* @return void
+		*/		
 		
+		function svn_compare_repoLocal() {
+			// get the arguments
+			$plugin = $_POST['plugin'] ;
+			
+			$local_cache = WP_CONTENT_DIR."/sedlex/svn" ; 
+		
+			echo "<h3>".__('Browsing the modifications', 'SL_framework')."</h3>" ; 
+			echo "<p>".sprintf(__('Comparing %s with %s', 'SL_framework'), "<em>".$local_cache."/".$plugin."/"."</em>", "<em>".WP_PLUGIN_DIR."/".$plugin."/</em>")."</p>" ; 
+			$folddiff = new foldDiff() ; 
+			$result = $folddiff->diff($local_cache."/".$plugin, WP_PLUGIN_DIR."/".$plugin) ; 
+			$folddiff->render(true, true) ; 
+			
+			// Confirmation asked
+			echo "<div id='confirm_to_svn'>" ; 
+			echo "<h3>".__('Confirmation', 'SL_framework')."</h3>" ; 
+			
+			echo "<p id='svn_button'><input onclick='svnToLocal(\"".$plugin."\") ; return false ; ' type='submit' name='submit' class='button-primary validButton' value='".__('Yes, the local version will be overwritten with the repository files', 'SL_framework')."' /></p>" ;  
+			
+			echo "<script>jQuery('#innerPopupForm').animate({scrollTop: 0}, 10);</script>\r\n" ; 
+			echo "</div>" ; 
+			
+			echo "<p><img id='wait_svn' src='".WP_PLUGIN_URL.'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/ajax-loader.gif' style='display:none;'></p>" ; 
+
+			echo "<div id='console_svn'></div>\r\n" ; 
+						
+			die() ; 
+		}
 		
 		/** ====================================================================================================================================================
 		* Callback for sending selected local file to repo
@@ -1594,7 +1688,7 @@ if (!class_exists('pluginSedLex')) {
 			$plugin = $_POST['plugin'] ;
 			$comment = $_POST['comment'] ;
 			$files = $_POST['files'] ;
-			echo "<p class='console' id='svn_console2'>\n" ; 
+			echo "<div class='console' id='svn_console2'>\n" ; 
 			echo __("Sending to the repository in progress...", "SL_framework")."<br/>----------<br/><br/>" ; 
 						
 			// SVN preparation
@@ -1605,7 +1699,7 @@ if (!class_exists('pluginSedLex')) {
 			$result = $svn->prepareCommit($root, $comment, true) ; 
 			if ($result['isOK']) {
 				echo __("Preparation of the sending done !", "SL_framework")."<br/>" ; 
-				echo "</p>\n" ; 
+				echo "</div>\n" ; 
 				
 				
 				echo "<script>" ; 
@@ -1704,10 +1798,9 @@ if (!class_exists('pluginSedLex')) {
 				echo "</script>" ; 
 				
 			} else {
-				echo __("Error while preparing the sending !", "SL_framework")."<br/>" ; 
-				echo "</p>\n" ; 
-				echo $snv->printRawResult($result['raw_result']) ; 
-			
+				echo __("Error while preparing the sending!", "SL_framework")."<br/>" ; 
+				echo $svn->printRawResult($result['raw_result']) ; 
+				echo "</div>\n" ; 
 			}
 							
 			die() ; 
@@ -1735,8 +1828,9 @@ if (!class_exists('pluginSedLex')) {
 			if ($res['isOK']) {
 				echo " <span style='color:#669900'>OK</span>" ; 
 			} else {
-				echo " <span style='color:#CC0000'>KO</span>" ; 
-				echo $snv->printRawResult($res['raw_result']) ; 
+				echo " <span style='color:#CC0000'>KO</span>" ;
+echo 	$res['svn_header']	 ; 
+				echo $svn->printRawResult($res['raw_result']) ; 
 			}
 			die() ; 
 		}
@@ -1761,8 +1855,8 @@ if (!class_exists('pluginSedLex')) {
 			if ($res['isOK']) {
 				echo " <span style='color:#669900'>OK</span>" ; 
 			} else {
-				echo " <span style='color:#CC0000'>KO</span>" ; 
-				echo $snv->printRawResult($res['raw_result']) ; 
+				echo " <span style='color:#CC0000'>KO</span><br/>" ; 
+				echo $svn->printRawResult($res['raw_result']) ; 
 			}
 			die() ; 
 		}
@@ -1787,8 +1881,8 @@ if (!class_exists('pluginSedLex')) {
 			if ($res['isOK']) {
 				echo " <span style='color:#669900'>OK</span>" ; 
 			} else {
-				echo " <span style='color:#CC0000'>KO</span>" ; 
-				echo $snv->printRawResult($res['raw_result']) ; 
+				echo " <span style='color:#CC0000'>KO</span><br/>" ; 
+				echo $svn->printRawResult($res['raw_result']) ; 
 			}
 			die() ; 
 		}
@@ -1812,11 +1906,96 @@ if (!class_exists('pluginSedLex')) {
 			// PUT the file
 			$res = $svn->merge($root, $activityFolder.$uuid,  true) ; 
 			if ($res['isOK']) {
-				echo " <span style='color:#669900'>".sprintf(__("The commit has ended successfully [ %s ]... You should received an email quickly !","SL_framework"), $res['commit_info'])."</span>" ; 
+				echo " <span style='color:#669900'>".sprintf(__("The commit has ended [ %s ]... You should received an email quickly !","SL_framework"), $res['commit_info'])."</span>" ; 
 			} else {
 				echo " <span style='color:#CC0000'>".__("The commit has ended but there is an error!","SL_framework")."</span>" ; 
-				echo $snv->printRawResult($res['raw_result']) ; 
+				echo $svn->printRawResult($res['raw_result']) ; 
 			}
+			die() ; 
+		}
+		
+		
+		/** ====================================================================================================================================================
+		* Callback for putting repo files in the local plugin
+		* 
+		* @access private
+		* @return void
+		*/		
+		
+		function svn_to_local() {
+			// get the arguments
+			$plugin = $_POST['plugin'] ;
+			$files = $_POST['files'] ;
+			echo "<div class='console' id='svn_console2'>\n" ; 
+			echo __("Sending to the local files in progress...", "SL_framework")."<br/>----------<br/><br/>" ; 
+						
+			// SVN preparation
+			$local_cache = WP_CONTENT_DIR."/sedlex/svn/".$plugin."/" ;  ;
+
+			//We add the created folder ... we order the folder to add by their string length because the shorter path should be add at first
+			$fold2add = array() ; 
+			foreach ($files as $f) {
+				if ($f[1]=='add_folder') {
+					$fold2add = array_merge($fold2add, array($f[0] => strlen($f[0])) ) ; 
+				}
+			}
+			asort($fold2add) ; 
+			foreach ($fold2add as $f => $n) {
+				$url = WP_PLUGIN_DIR."/".$plugin."/".$f ; 
+				if (@mkdir($url, 0777, true)) {
+					echo "(A) ".$f." (folder) <span style='color:#669900'>OK</span><br/>" ; 
+				} else {
+					echo "(A) ".$f." (folder) <span style='color:#CC0000'>KO</span><br/>" ; 
+				}
+			}
+			// Now we send/delete the files !!!!
+			foreach ($files as $f) {
+				$url = WP_PLUGIN_DIR."/".$plugin."/".$f[0] ; 
+				if ($f[1]=='add') {
+					if (@copy ($local_cache.$f[0], $url)) {
+						echo "(A) ".$f[0]." <span style='color:#669900'>OK</span><br/>" ; 
+					} else {
+						echo "(A) ".$f[0]." <span style='color:#CC0000'>KO</span><br/>" ; 
+					}
+				}
+				if ($f[1]=='modify') {
+					if (@copy ($local_cache.$f[0], $url)) {
+						echo "(U) ".$f[0]." <span style='color:#669900'>OK</span><br/>" ; 
+					} else {
+						echo "(U) ".$f[0]." <span style='color:#CC0000'>KO</span><br/>" ; 
+					}
+				}
+				if ($f[1]=='delete') {
+					if (@unlink($url)) {
+						echo "(D) ".$f[0]." <span style='color:#669900'>OK</span><br/>" ; 
+					} else {
+						echo "(D) ".$f[0]." <span style='color:#CC0000'>KO</span><br/>" ; 
+					}						
+				}
+			}
+			
+			//We delete the deleted folder ... we order (reverse) the folder to delete them by their string length because the shorter path should be add at last
+			$fold2delete = array() ; 
+			foreach ($files as $f) {
+				if ($f[1]=='delete_folder') {
+					$fold2delete = array_merge($fold2delete, array($f[0] => strlen($f[0])) ) ; 
+				}
+			}
+			arsort($fold2delete) ; 
+			foreach ($fold2delete as $f => $n) {
+				$url = WP_PLUGIN_DIR."/".$plugin."/".$f ; 
+				if (@unlink($url)) {
+					echo "(D) ".$f." <span style='color:#669900'>OK</span><br/>" ; 
+				} else {
+					echo "(D) ".$f." <span style='color:#CC0000'>KO</span><br/>" ; 
+				}						
+			}
+			echo " <span style='color:#669900'>".__("The rollback has ended ... ","SL_framework")."</span>" ; 
+
+			echo "</div>\n" ; 
+			echo "<script>jQuery('#innerPopupForm').animate({scrollTop: jQuery('#innerPopupForm')[0].scrollHeight}, 10);</script>" ; 
+				
+							
 			die() ; 
 		}
 
