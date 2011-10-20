@@ -785,24 +785,25 @@ if (!class_exists('pluginSedLex')) {
 													if ($request['response']['code']!='200') {
 														$info_core .= "<p>".sprintf(__("You do not seem to have a repository for Wordpress because %s returns a 404 error. Thus, ask for one here: %s", 'SL_framework'), "<a href='http://svn.wp-plugins.org/$plugin_name'>http://svn.wp-plugins.org/$plugin_name</a>", "<a href='http://wordpress.org/extend/plugins/add/'>Wordpress Repository</a>") ."</p>" ; 
 													} else {													
-														$info_core .=  "<ul>" ; 
-														
 														$md5 = md5($plugin_name." to_local") ; 
-														$info_core .=  "<li style='padding-left:3em; '>" ; 
+														$info_core .=  "<p style='color:#666666;font-size:75%;padding-left:3em;'>" ; 
 														$info_core .= "<img id='wait_svn_".$md5."' src='".WP_PLUGIN_URL.'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/ajax-loader.gif' style='display:none;'>" ; 
 														$info_core .= "<img src='".WP_PLUGIN_URL.'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/arrow-left.png'>&nbsp;" ; 
-														$info_core .= "<a href='#' onClick='showSvnPopup(\"".$md5."\", \"".$plugin_name."\", \"to_local\"); return false;'>".__("Overwrite the local plugin files with files stored the SVN repository", 'SL_framework')."</a>" ;
-														$info_core .=  "</li>" ;
+														$info_core .= __("Overwrite the local plugin files with files stored the SVN repository", 'SL_framework') ;
+														$info_core .= " (<a href='#' onClick='showSvnPopup(\"".$md5."\", \"".$plugin_name."\", \"to_local_quick\"); return false;'>".__("Quick", 'SL_framework') ."</a>" ;
+														$info_core .=  "|<a href='#' onClick='showSvnPopup(\"".$md5."\", \"".$plugin_name."\", \"to_local\"); return false;'>".__("Slow", 'SL_framework')."</a>)" ; 
+														$info_core .=  "</p>" ;
 														
 														$md5 = md5($plugin_name." to_repo") ; 
-														$info_core .= "<li style='padding-left:3em; '>" ; 
+														$info_core .=  "<p style='color:#666666;font-size:75%;padding-left:3em;'>" ; 
 														$info_core .= "<img id='wait_svn_".$md5."' src='".WP_PLUGIN_URL.'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/ajax-loader.gif' style='display:none;'>" ; 
 														$info_core .= "<img src='".WP_PLUGIN_URL.'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/arrow-right.png'>&nbsp;" ; 
-														$info_core .=  "<a href='#' onClick='showSvnPopup(\"".$md5."\", \"".$plugin_name."\", \"to_repo\"); return false;'>".__("Update the SVN repository with your current local plugin files", 'SL_framework')."</a>" ; 
-														$info_core .=  " (<a href='#' onClick='showSvnPopup(\"".$md5."\", \"".$plugin_name."\", \"to_repo_quick\"); return false;'>".__("Faster version", 'SL_framework')."</a>)" ; 
-														$info_core .=  "</li>" ; 
+														$info_core .= __("Update the SVN repository with your current local plugin files", 'SL_framework') ;
+														$info_core .=  " (<a href='#' onClick='showSvnPopup(\"".$md5."\", \"".$plugin_name."\", \"to_repo_quick\"); return false;'>".__("Quick", 'SL_framework')."</a>" ; 
+														$info_core .=  "|<a href='#' onClick='showSvnPopup(\"".$md5."\", \"".$plugin_name."\", \"to_repo\"); return false;'>".__("Slow", 'SL_framework')."</a>)" ; 
+														$info_core .=  "</p>" ; 
 														
-														$info_core .=  "</ul>" ; 
+														$info_core .=  "<p style='color:#666666;font-size:75%;text-align:right;'>".__("The slow version may be useful if you have issues with the quick version.", 'SL_framework') ."</p>" ; 
 														
 													}
 												}
@@ -1471,25 +1472,32 @@ if (!class_exists('pluginSedLex')) {
 				$vcc = $vcc['vcc'] ; 
 				
 				$res = $svn->getAllFiles("/".$plugin."/trunk", $vcc, $revision, $local_cache."/".$plugin, true) ; 
-				if ($res['isOK']) {
-					echo "<div class='console' id='svn_console'>\n" ; 
-					foreach ($res['info'] as $inf) {
-						$i++ ; 
-						if ($inf['folder']) {
-							if ($inf['ok']) {
-								echo $i.". ".$inf['url']." <span style='color:#669900'>OK</span> (".__('folder created', 'SL_framework').")<br/>" ; 
-							} else {
-								echo $i.". ".$inf['url']." <span style='color:#CC0000'>KO</span> (".__('folder creation has failed !', 'SL_framework').")<br/>" ; 						
-							}
+				echo "<div id='svn_div'>" ; 
+				
+				// On met a jour le cache local !
+				echo "<h3>".__('Updating the local cache', 'SL_framework')."</h3>" ; 
+
+				echo "<div class='console' id='svn_console'>\n" ; 
+				foreach ($res['info'] as $inf) {
+					$i++ ; 
+					if ($inf['folder']) {
+						if ($inf['ok']) {
+							echo $i.". ".$inf['url']." <span style='color:#669900'>OK</span> (".__('folder created', 'SL_framework').")<br/>" ; 
 						} else {
-							if ($inf['ok']) {
-								echo $i.". ".$inf['url']." <span style='color:#669900'>OK</span> (".sprintf(__("%s bytes transfered", 'SL_framework'), $inf['size']).")<br/>" ; 
-							} else {
-								echo $i.". ".$inf['url']." <span style='color:#CC0000'>KO</span><br/>" ; 						
-							}						
+							echo $i.". ".$inf['url']." <span style='color:#CC0000'>KO</span> (".__('folder creation has failed !', 'SL_framework').")<br/>" ; 						
 						}
+					} else {
+						if ($inf['ok']) {
+							echo $i.". ".$inf['url']." <span style='color:#669900'>OK</span> (".sprintf(__("%s bytes transfered", 'SL_framework'), $inf['size']).")<br/>" ; 
+						} else {
+							echo $i.". ".$inf['url']." <span style='color:#CC0000'>KO</span><br/>" ; 						
+						}						
 					}
-					echo "</div>\n" ; 	
+				}
+				
+				
+				if ($res['isOK']) {
+					echo "</div>\n" ; 
 					echo "<script>\n" ; 	
 					echo "jQuery('#innerPopupForm').animate({scrollTop: jQuery('#innerPopupForm')[0].scrollHeight}, 10);\r\n" ; 
 					if ($sens=="to_repo_quick") {
@@ -1501,11 +1509,12 @@ if (!class_exists('pluginSedLex')) {
 					echo "</script>\n" ; 	
 					
 				} else {
-					echo "<div class='console'>\n" ; 
-					echo sprintf(__('An error occurred when listing the files of the %s plugin ! Sorry ...', 'SL_framework'), "<b>".$plugin."</b>")."<br/>\n" ; 
-					$svn->printRawResult($files['raw_result']) ; 
-					echo "</div>\n" ; 				
+					echo __('An error occurred during the retrieval of files on the server ! Sorry ...', 'SL_framework')."<br/>\n" ; 
+					$svn->printRawResult($res['raw_result']) ; 	
+					echo "</div>\n" ; 					
 				}
+				echo "</div>\n" ; 	
+				
 				
 			} else if (($sens=="to_repo")||($sens=="to_local")) {
 				
@@ -1513,7 +1522,7 @@ if (!class_exists('pluginSedLex')) {
 				
 				// On met a jour le cache local !
 				echo "<h3>".__('Updating the local cache', 'SL_framework')."</h3>" ; 
-				echo "<p>".__('To be sure that you compare the local plugin with the latest repoository files, it is necessary to download it locally. Please wait during the update...', 'SL_framework')."</p>" ; 
+				echo "<p>".__('To be sure that you compare the local plugin with the latest repoository files, it is necessary to download it locally. Please wait during the update (your are using the slow version which may be more reliable especially with big plugins)...', 'SL_framework')."</p>" ; 
 				
 				$files = $svn->listFilesInRepository("/".$plugin."/trunk/", true) ; 
 				
@@ -1828,8 +1837,10 @@ if (!class_exists('pluginSedLex')) {
 			if ($res['isOK']) {
 				echo " <span style='color:#669900'>OK</span>" ; 
 			} else {
-				echo " <span style='color:#CC0000'>KO</span>" ;
-echo 	$res['svn_header']	 ; 
+				echo " <span style='color:#CC0000'>KO</span><br/>" ;
+				echo 	"SVN header : <br/>" ; 
+				print_r($res['svn_header']) ; 
+				echo "<br/>" ; 
 				echo $svn->printRawResult($res['raw_result']) ; 
 			}
 			die() ; 
