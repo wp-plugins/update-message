@@ -21,6 +21,7 @@ The message can be configured direcly when editing a post. There is a box 'Updat
 
 = Localizations =
 
+* Portugese translation (by PedroNave)
 * French translation (by me)
 
 = Features of the framework = 
@@ -54,6 +55,9 @@ Moreover, all the plugins developped with this framework is able to use astonish
 
 == Changelog ==
 
+= 1.1.1 =
+* Portugese translation (by PedroNave)
+
 = 1.1.0 =
 * SVN support
 
@@ -83,4 +87,4 @@ Moreover, all the plugins developped with this framework is able to use astonish
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:8f615d6ed877d0af62613e9d428f7d00
+InfoVersion:a7c3f12e818b8da4f2d93ac511ff9886

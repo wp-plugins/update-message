@@ -4,15 +4,15 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2011-10-24T16:50:49+00:00\n"
-"Last-Translator: SedLex <http://www.sedlex.fr/>\n"
+"PO-Revision-Date: 2011-10-24T16:46:09+00:00\n"
+"Last-Translator: PedroNave <http://pedronave.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n>1;\n"
-"X-Poedit-Language: French\n"
-"X-Poedit-Country: France\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: Portugal\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: __;\n"
 "X-Poedit-Basepath: \n"
@@ -21,74 +21,74 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 
 msgid "If you have been updated this post with new information, use this box to inform about it."
-msgstr "Si vous avez mise à jour cet article, vous pouvez utiliser cette boite afin d&#039;informer de cette mise à jour."
+msgstr "Se atualizou este post com informação nova, use esta caixa para informar sobre isso."
 
 msgid "Please note that the different update messages have to be separed with 3 dashes:"
-msgstr "Les différents messages de mise à jour doivent être séparés avec trois tirets :"
+msgstr "Note que as diferentes mensages de atualização têm de estar separadas com 3 traços"
 
 msgid "If you want to force the date displayed, the first line must be %s"
-msgstr "Si vous voulez forcer la date affichée, la première ligne doit être %s"
+msgstr "Se quer forçar a data visível, a primeira linha tem de ser %s"
 
 msgid "Example:"
-msgstr "Exemple : "
+msgstr "Exemplo"
 
 msgid "The first message"
-msgstr "Le premier message"
+msgstr "Primeira mensagem"
 
 msgid "The second message"
-msgstr "Le second message"
+msgstr "Segunda mensagem"
 
 msgid "This plugin creates information box in posts/page to contain update information"
-msgstr "Ce plugin crée un boite d&#039;information dans les articles/pages pour contenir des informations de mise à jour"
+msgstr "Este plugin cria uma caixa de informação nos posts/páginas contendo informação de atualização"
 
 msgid "Here is the parameters of the plugin. Please modify them at your convenience."
-msgstr "Voici les paramètre du plugin. Vous pouvez les modifier comme vous le souhaitez."
+msgstr "Aqui estão os parâmetros do plugin. Modifique-os à sua vontade."
 
 msgid "Where do you want to place the update message?"
-msgstr "Où placer le message de mise à jour ?"
+msgstr "Onde quer colocar a mensagem de atualização?"
 
 msgid "Placement:"
-msgstr "Endroit : "
+msgstr "Colocação"
 
 msgid "You can also add a shorcode %s to add an updated box wherever you want in your posts"
-msgstr "Vous pouvez également placer un shortcode %s dans vos articles afin de placer le message où vous le souhaitez."
+msgstr "Também pode adicionar um shortcode %s para adicionar uma caixa de atualização onde bem entender nos seus posts"
 
 msgid "How do you want to render the message?"
-msgstr "Comment afficher le message ?"
+msgstr "Como quer renderizar a mensagem?"
 
 msgid "HTML:"
-msgstr "HTML :"
+msgstr "HTML:"
 
 msgid "The standard html is:"
-msgstr "Le HTML standard est :"
+msgstr "O HTML padrão é:"
 
 msgid "Published date"
-msgstr "Date de publication"
+msgstr "Data de publicação"
 
 msgid "Updated date"
-msgstr "Date de mise à jour"
+msgstr "Data de atualização"
 
 msgid "Updated text"
-msgstr "Texte de mise à jour"
+msgstr "Texto de atualização"
 
 msgid "Parameters"
-msgstr "Paramètres"
+msgstr "Parâmetros"
 
 msgid "Manage translations"
-msgstr "Gérer les traductions"
+msgstr "Gerir traduções"
 
 msgid "This form is an easy way to contact the author and to discuss issues / incompatibilities / etc."
-msgstr "Ce formulaire vous permet de contacter facilement l&#039;auteur pour discuter des problèmes / des incompatibilités / etc."
+msgstr "Este formulário é uma forma fácil de contactar o autor afim de discutir problemas/incompatibilidades/etc."
 
 msgid "Give feedback"
-msgstr "Donner un feedback"
+msgstr "Dar feedback"
 
 msgid "Here is the plugins developped by the author"
-msgstr "Voici les plugins développés par l&#039;auteur"
+msgstr "Eis os plugins desenvolvidos pelo autor"
 
 msgid "Other possible plugins"
-msgstr "Autres plugins possibles"
+msgstr "Outros plugins possíveis"
 
 msgid "Here is the plugins developped by the author:"
-msgstr "Voici les plugins développés par l&#039;auteur : "
+msgstr "Eis os plugins desenvolvidos pelo autor:"
 
