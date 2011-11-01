@@ -56,6 +56,9 @@ Moreover, all the plugins developped with this framework is able to use astonish
 == Changelog ==
 
 = 1.1.1 =
+* Update of the core
+
+= 1.1.1 =
 * Portugese translation (by PedroNave)
 
 = 1.1.0 =
@@ -87,4 +90,4 @@ Moreover, all the plugins developped with this framework is able to use astonish
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:a7c3f12e818b8da4f2d93ac511ff9886
+InfoVersion:1ed1d4d492007e4975548ea108c54fc2
