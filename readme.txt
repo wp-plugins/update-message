@@ -21,6 +21,7 @@ The message can be configured direcly when editing a post. There is a box 'Updat
 
 = Localizations =
 
+* Netherlands translation (by MichaelWijnands)
 * Portugese translation (by PedroNave)
 * French translation (by me)
 
@@ -55,7 +56,10 @@ Moreover, all the plugins developped with this framework is able to use astonish
 
 == Changelog ==
 
-= 1.1.1 =
+= 1.1.3 =
+* Netherlands translation (by MichaelWijnands)
+
+= 1.1.2 =
 * Update of the core
 
 = 1.1.1 =
@@ -90,4 +94,4 @@ Moreover, all the plugins developped with this framework is able to use astonish
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:1ed1d4d492007e4975548ea108c54fc2
+InfoVersion:e653479a29d72ac54326629d608a089a
