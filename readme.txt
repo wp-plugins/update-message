@@ -21,6 +21,7 @@ The message can be configured direcly when editing a post. There is a box 'Updat
 
 = Localizations =
 
+* Polish translation (by Kajaczek)
 * Netherlands translation (by MichaelWijnands)
 * Portugese translation (by PedroNave)
 * French translation (by me)
@@ -55,6 +56,9 @@ Moreover, all the plugins developped with this framework is able to use astonish
 3. Configuration of the update box in a post
 
 == Changelog ==
+
+= 1.1.4 =
+* Polish translation (by Kajaczek)
 
 = 1.1.3 =
 * Netherlands translation (by MichaelWijnands)
@@ -94,4 +98,4 @@ Moreover, all the plugins developped with this framework is able to use astonish
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:e653479a29d72ac54326629d608a089a
+InfoVersion:ee6995356cc7343f3abf726e1c56c6ae

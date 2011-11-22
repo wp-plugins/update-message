@@ -1,0 +1,94 @@
+msgid ""
+msgstr ""
+"Generated: SL Framework (http://www.sedlex.fr)\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2011-11-22T11:25:08+00:00\n"
+"Last-Translator: Kajaczek <www.zanimumrechce.pl>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Poedit-Language: Polish\n"
+"X-Poedit-Country: Poland\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;\n"
+"X-Poedit-Basepath: \n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes\n"
+
+msgid "If you have been updated this post with new information, use this box to inform about it."
+msgstr "Jeśli aktualizowałeś wpis o nową treść, wpisz informacje o aktualizacji w tym oknie."
+
+msgid "Please note that the different update messages have to be separed with 3 dashes:"
+msgstr "Inne informacje o aktualizacji muszą być oddzielone trzema myślnikami (-)."
+
+msgid "If you want to force the date displayed, the first line must be %s"
+msgstr "Jeśli chcesz wymusić nadpisanie daty, pierwsza linia musi wyglądać tak: %s "
+
+msgid "Example:"
+msgstr "Przykład:"
+
+msgid "The first message"
+msgstr "Pierwsza wiadomość"
+
+msgid "The second message"
+msgstr "Druga wiadomość"
+
+msgid "This plugin creates information box in posts/page to contain update information"
+msgstr "Ta wtyczka umożliwia tworzenie okna informacyjnego we wpisie z treścią aktualizacji."
+
+msgid "Here is the parameters of the plugin. Please modify them at your convenience."
+msgstr "Parametry wyświetlania wiadomości."
+
+msgid "Where do you want to place the update message?"
+msgstr "Gdzie ma być wyświetlana wiadomość o aktualizacji?"
+
+msgid "Placement:"
+msgstr "Umiejscowienie"
+
+msgid "You can also add a shorcode %s to add an updated box wherever you want in your posts"
+msgstr "Możliwe jest również użycie shortcode&#039;u %s w celu dodania okna aktualizacji w dowolnym miejscu wpisu."
+
+msgid "How do you want to render the message?"
+msgstr "Jak ma być wyświetlana wiadomość?"
+
+msgid "HTML:"
+msgstr "HTML:"
+
+msgid "The standard html is:"
+msgstr "Standardowy HTML:"
+
+msgid "Published date"
+msgstr "Data publikacji"
+
+msgid "Updated date"
+msgstr "Data aktualizacji"
+
+msgid "Updated text"
+msgstr "Tekst aktualizacji"
+
+msgid "Parameters"
+msgstr "Parametry"
+
+msgid "Manage translations"
+msgstr "Zarządzaj tłumaczeniami"
+
+msgid "This form is an easy way to contact the author and to discuss issues / incompatibilities / etc."
+msgstr "Formularz umożliwia łatwy kontakt z autorem oraz zgłaszanie problemów, dyskusję, itd."
+
+msgid "Give feedback"
+msgstr "Wyślij nam swoją opinię"
+
+msgid "Here is the plugins developped by the author"
+msgstr "Inne dodatki przygotowane przez autora"
+
+msgid "Other possible plugins"
+msgstr "Inne dodatki"
+
+msgid "Here is the plugins developped by the author:"
+msgstr "Inne dodatki przygotowane przez autora"
+
