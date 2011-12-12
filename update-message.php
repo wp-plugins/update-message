@@ -2,7 +2,7 @@
 /**
 Plugin Name: Update Message
 Description: <p>Add an update box in posts. </p><p>This box can contain a message, for instance in order to point out that the post have been modified of to stress that the post in no longer up to date</p><p>The message can be configured direcly when editing a post. There is a box 'Update message' added on the left.</p><p>Plugin developped from the orginal plugin <a href="http://wordpress.org/extend/plugins/wp-update-message/">WP Update Message</a>. </p><p>This plugin is under GPL licence. </p>
-Version: 1.1.5
+Version: 1.1.6
 Author: SedLex
 Author Email: sedlex@sedlex.fr
 Framework Email: sedlex@sedlex.fr
@@ -40,6 +40,8 @@ class updatemessage extends pluginSedLex {
 		add_filter('the_content', array($this,'update_message_content'));
 		add_action('admin_menu', array($this, 'meta_box'));
 		add_shortcode( 'maj', array( $this, 'maj_shortcode' ) );
+		add_action('wp_print_styles', array( $this, 'ajoute_inline_css'));
+
 	}
 	
 	/**
@@ -179,12 +181,45 @@ class updatemessage extends pluginSedLex {
 	<small>Updated: %ud%</small>
 	<p>%ut%</p>
 </div>' 	; break ; 
+			case 'css'		 	: return '*.update_message {
+	background: #fff url(../../update-message/img/bkg-yellow.gif) repeat-x top;
+	border: 1px solid #e6db55;
+	padding: 15px 15px 5px 15px;
+	margin: 10px 0 10px 0;
+	-moz-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.update_message p {
+	font: normal 11px/14px Arial;
+	margin: 0;
+	padding: 0 0 10px 0;
+	color: #555;
+}
+
+.update_message small {
+	font: bold 11px/14px Arial;
+	color: #555;
+	text-transform: uppercase;
+}' ; break ; 
+
 			case 'position' 	: return array("*top", "bottom", "both", "none") 	; break ; 
 		}
 		return null ;
 	}
 
-
+	/** ====================================================================================================================================================
+	* Add CSS
+	* 
+	* @return void
+	*/
+	
+	function ajoute_inline_css() {
+		$this->add_inline_css($this->get_param('css')) ; 
+	}
+	
 	/** ====================================================================================================================================================
 	* The configuration page
 	* 
@@ -233,28 +268,53 @@ class updatemessage extends pluginSedLex {
 					$comment .= "<code>%ud%</code> = ".__('Updated date',$this->pluginID)."</span><br/>" ; 
 					$comment .= "<code>%ut%</code> = ".__('Updated text',$this->pluginID)."</span>" ; 
 					$params->add_comment($comment) ; 	
+					$params->add_param('css', __('CSS:',$this->pluginID)) ; 
+					$comment = __('The standard CSS is:',$this->pluginID); 
+					$comment .= "<br/><code>.update_message {<br/>
+&nbsp; &nbsp; &nbsp; background: #fff url(../../update-message/img/bkg-yellow.gif) repeat-x top;<br/>
+&nbsp; &nbsp; &nbsp; border: 1px solid #e6db55;<br/>
+&nbsp; &nbsp; &nbsp; padding: 15px 15px 5px 15px;<br/>
+&nbsp; &nbsp; &nbsp; margin: 10px 0 10px 0;<br/>
+&nbsp; &nbsp; &nbsp; -moz-border-radius: 5px;<br/>
+&nbsp; &nbsp; &nbsp; -khtml-border-radius: 5px;<br/>
+&nbsp; &nbsp; &nbsp; -webkit-border-radius: 5px;<br/>
+&nbsp; &nbsp; &nbsp; border-radius: 5px;<br/>
+}<br/>
+<br/>
+.update_message p {<br/>
+&nbsp; &nbsp; &nbsp; font: normal 11px/14px Arial;<br/>
+&nbsp; &nbsp; &nbsp; margin: 0;<br/>
+&nbsp; &nbsp; &nbsp; padding: 0 0 10px 0;<br/>
+&nbsp; &nbsp; &nbsp; color: #555;<br/>
+}<br/>
+<br/>
+.update_message small {<br/>
+&nbsp; &nbsp; &nbsp; font: bold 11px/14px Arial;<br/>
+&nbsp; &nbsp; &nbsp; color: #555;<br/>
+&nbsp; &nbsp; &nbsp; text-transform: uppercase;<br/>
+}</code><br/>";
+
+					$params->add_comment($comment) ; 						
 					$params->flush() ; 
 					
-			$tabs->add_tab(__('Parameters',  $this->pluginID), ob_get_clean() ) ; 	
+			$tabs->add_tab(__('Parameters',  $this->pluginID), ob_get_clean() , WP_PLUGIN_URL.'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/tab_param.png") ; 	
 			
 			ob_start() ; 
 				$plugin = str_replace("/","",str_replace(basename(__FILE__),"",plugin_basename( __FILE__))) ; 
 				$trans = new translationSL($this->pluginID, $plugin) ; 
 				$trans->enable_translation() ; 
-			$tabs->add_tab(__('Manage translations',  $this->pluginID), ob_get_clean() ) ; 	
+			$tabs->add_tab(__('Manage translations',  $this->pluginID), ob_get_clean(), WP_PLUGIN_URL.'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/tab_trad.png" ) ; 	
 
 			ob_start() ; 
-				echo __('This form is an easy way to contact the author and to discuss issues / incompatibilities / etc.',  $this->pluginID) ; 
 				$plugin = str_replace("/","",str_replace(basename(__FILE__),"",plugin_basename( __FILE__))) ; 
 				$trans = new feedbackSL($plugin, $this->pluginID) ; 
 				$trans->enable_feedback() ; 
-			$tabs->add_tab(__('Give feedback',  $this->pluginID), ob_get_clean() ) ; 	
+			$tabs->add_tab(__('Give feedback',  $this->pluginID), ob_get_clean() , WP_PLUGIN_URL.'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/tab_mail.png") ; 	
 			
 			ob_start() ; 
-				echo "<p>".__('Here is the plugins developped by the author',  $this->pluginID) ."</p>" ; 
 				$trans = new otherPlugins("sedLex", array('wp-pirates-search')) ; 
 				$trans->list_plugins() ; 
-			$tabs->add_tab(__('Other possible plugins',  $this->pluginID), ob_get_clean() ) ; 	
+			$tabs->add_tab(__('Other plugins',  $this->pluginID), ob_get_clean() , WP_PLUGIN_URL.'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/tab_plug.png") ; 	
 			
 			echo $tabs->flush() ; 
 			
