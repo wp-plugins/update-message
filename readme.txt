@@ -1,15 +1,15 @@
 === Update Message ===
 
-Contributors: SedLex
 Author: SedLex
+Contributors: SedLex
 Author URI: http://www.sedlex.fr/
 Plugin URI: http://wordpress.org/extend/plugins/update-message/
-Tags: plugin, update, message, maj
+Tags: posts, post, update, message
 Requires at least: 3.0
-Tested up to: 3.2
+Tested up to: 3.3.1
 Stable tag: trunk
 
-Add a block in post with an update message
+Add an update box in posts. 
 
 == Description ==
 
@@ -17,30 +17,34 @@ Add an update box in posts.
 
 This box can contain a message, for instance in order to point out that the post have been modified of to stress that the post in no longer up to date
 
-The message can be configured direcly when editing a post. There is a box 'Update message' added on the left.
+The message can be configured direcly when editing a post. There is a box âUpdate messageâ added on the left.
 
-= Localizations =
+Plugin developped from the orginal plugin WP Update Message. 
 
-* German translation (by klotzi703611)
-* Polish translation (by Kajaczek)
-* Netherlands translation (by MichaelWijnands)
-* Portugese translation (by PedroNave)
-* French translation (by me)
+This plugin is under GPL licence. 
 
-= Features of the framework = 
+= Localization =
 
-This plugin use SL framework.
+* German (Germany) translation provided by klotzi703611
+* Greek (Greece) translation provided by skyrodos
+* English (United States), default language
+* French (France) translation provided by SedLex
+* Dutch (Netherlands) translation provided by MichaelWijnands
+* Polish (Poland) translation provided by Kajaczek
+* Portuguese (Portugal) translation provided by PedroNave
 
-You may translate this plugin with an embedded feature which is very easy to use by any end-users (without any external tools / knowledge).
+= Features of the framework =
 
-You may also create a new plugin. You will download, from the plugin, an "hello World" plugin: You just have to fill the blank and follow the comments.
+This plugin uses the SL framework. This framework eases the creation of new plugins by providing incredible tools and frames.
 
-Moreover, all the plugins developped with this framework is able to use astonishing tools, such as :
+For instance, a new created plugin comes with
 
-* embedded SVN client (subversion) to easily commit/update the plugin in wordpress.org repository ; 
-* detailled documentation of all available classes and methodes ; 
-* updating the core with a single click ; 
+* A translation interface to simplify the localization of the text of the plugin ; 
+* An embedded SVN client (subversion) to easily commit/update the plugin in wordpress.org repository ; 
+* A detailled documentation of all available classes and methodes ; 
 * etc.
+
+Have fun !
 
 == Installation ==
 
@@ -58,8 +62,14 @@ Moreover, all the plugins developped with this framework is able to use astonish
 
 == Changelog ==
 
+= 1.2.0 =
+* Major release of the framework
+
+= 1.1.7 =
+* Greek translation (by skyrodos)
+
 = 1.1.6 =
-* Improve english text thanks to Rene
+* Improve English text thanks to Rene
 
 = 1.1.5 =
 * German translation (by klotzi703611)
@@ -105,4 +115,4 @@ Moreover, all the plugins developped with this framework is able to use astonish
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:9f2482be8d68ee0b1b9009fd86b068fa
+InfoVersion:5e0b2268cbb86c3e3e99ca692f1a7695
