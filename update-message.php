@@ -3,7 +3,7 @@
 Plugin Name: Update Message
 Plugin Tag: posts, post, update, message
 Description: <p>Add an update box in posts. </p><p>This box can contain a message, for instance in order to point out that the post have been modified of to stress that the post in no longer up to date</p><p>The message can be configured direcly when editing a post. There is a box 'Update message' added on the left.</p><p>Plugin developped from the orginal plugin <a href="http://wordpress.org/extend/plugins/wp-update-message/">WP Update Message</a>. </p><p>This plugin is under GPL licence. </p>
-Version: 1.2.0
+Version: 1.2.1
 Author: SedLex
 Author Email: sedlex@sedlex.fr
 Framework Email: sedlex@sedlex.fr
@@ -42,7 +42,6 @@ class updatemessage extends pluginSedLex {
 		add_action('admin_menu', array($this, 'meta_box'));
 		add_shortcode( 'maj', array( $this, 'maj_shortcode' ) );
 		add_action('wp_print_styles', array( $this, 'ajoute_inline_css'));
-
 	}
 	
 	/**
@@ -135,10 +134,10 @@ class updatemessage extends pluginSedLex {
 				$html = stripslashes($this->get_param('html')) ; 
 				foreach ($all_msg as $a) {
 		
-					preg_match('|\*([0-3][0-9]\/[0-1][0-9]\/[0-9]{2})\*|',$a, $date) ; 
-					$a = trim(str_replace("*".$date[1]."*", "", $a)) ; 
+					preg_match('|\*([0-3][0-9])\/([0-1][0-9])\/([0-9]{2})\*|',$a, $date) ; 
+					$a = trim(str_replace("*".$date[1]."/".$date[2]."/".$date[3]."*", "", $a)) ; 
 					
-					$b = str_replace('%ud%', $date[1], $html);
+					$b = str_replace('%ud%', date_i18n(get_option('date_format'), mktime(0,0,0,$date[2], $date[1], $date[3])), $html);
 					$b = str_replace('%pd%', get_the_time(), $b);
 					$b = str_replace('%ut%', $a, $b);
 					
@@ -334,18 +333,18 @@ class updatemessage extends pluginSedLex {
 		
 		$html = stripslashes($this->get_param('html')) ; 
 		
-					
-		$b = str_replace('%ud%', $atts['update'], $html);
-		$b = str_replace('%pd%', get_the_time(), $b);
+		
+		
+		if (preg_match('|([0-3][0-9])\/([0-1][0-9])\/([0-9]{2})|',$atts['update'], $date)) { 
+			$b = str_replace('%ud%', date_i18n(get_option('date_format'), mktime(0,0,0,$date[2], $date[1], $date[3])), $html);
+		} else {
+			$b = str_replace('%ud%', $atts['update'], $html);
+		}
+		$b = str_replace('%pd%', "", $b);
 		$b = str_replace('%ut%', $text, $b);
 					
-		return $b ; 					
-		
-		
+		return $b ;
 	}
-
 }
-
 $updatemessage = updatemessage::getInstance();
-
 ?>

@@ -17,7 +17,7 @@ Add an update box in posts.
 
 This box can contain a message, for instance in order to point out that the post have been modified of to stress that the post in no longer up to date
 
-The message can be configured direcly when editing a post. There is a box âUpdate messageâ added on the left.
+The message can be configured direcly when editing a post. There is a box 'Update message' added on the left.
 
 Plugin developped from the orginal plugin WP Update Message. 
 
@@ -61,6 +61,9 @@ Have fun !
 3. Configuration of the update box in a post
 
 == Changelog ==
+
+= 1.2.1 =
+* The date format may be adapted. The format used will be the default wordpress format
 
 = 1.2.0 =
 * Major release of the framework
@@ -115,4 +118,4 @@ Have fun !
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:5e0b2268cbb86c3e3e99ca692f1a7695
+InfoVersion:02ab169d01c5f13b85f7382be1f55551
