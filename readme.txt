@@ -62,6 +62,9 @@ Have fun !
 
 == Changelog ==
 
+= 1.2.2 =
+* Update of the framework
+
 = 1.2.1 =
 * The date format may be adapted. The format used will be the default wordpress format
 
@@ -118,4 +121,4 @@ Have fun !
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:02ab169d01c5f13b85f7382be1f55551
+InfoVersion:04ef2c1bfe4ea7c291f044668c5cecce

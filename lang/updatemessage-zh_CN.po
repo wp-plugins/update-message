@@ -1,0 +1,94 @@
+msgid ""
+msgstr ""
+"Generated: SL Framework (http://www.sedlex.fr)\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2012-02-21T02:58:42+00:00\n"
+"Last-Translator: wensonjo <http://www.seotechbook.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Language: Chinese\n"
+"X-Poedit-Country: People's Republic of China\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;\n"
+"X-Poedit-Basepath: \n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes\n"
+
+msgid "If you have been updated this post with new information, use this box to inform about it."
+msgstr "如果你更新了这篇文章，就可以用这个插件来通知访问者。"
+
+msgid "Please note that the different update messages have to be separed with 3 dashes:"
+msgstr "请注意：不同时间的更新通知会用3个“~”符号分开："
+
+msgid "If you want to force the date displayed, the first line must be %s"
+msgstr "如果你想显示时间，必须在第一行用%s"
+
+msgid "Example:"
+msgstr "例如："
+
+msgid "The first message"
+msgstr "第一条通知"
+
+msgid "The second message"
+msgstr "第二条通知"
+
+msgid "This plugin creates information box in posts/page to contain update information"
+msgstr "这个插件在文章或页面上生成更新通知"
+
+msgid "Here is the parameters of the plugin. Please modify them at your convenience."
+msgstr "下面是插件的参数，你可以根据需求修改它。"
+
+msgid "Where do you want to place the update message?"
+msgstr "你想把更新通知显示在什么地方？"
+
+msgid "Placement:"
+msgstr "位置："
+
+msgid "You can also add a shorcode %s to add an updated box wherever you want in your posts"
+msgstr "你可以在文章的任何地方插入代码“%s”来显示更新通知"
+
+msgid "How do you want to render the message?"
+msgstr "你想怎么让通知条显示出来？"
+
+msgid "HTML:"
+msgstr "HTML："
+
+msgid "The standard html is:"
+msgstr "标准的HTML是："
+
+msgid "Published date"
+msgstr "发布时间"
+
+msgid "Updated date"
+msgstr "更新时间"
+
+msgid "Updated text"
+msgstr "更新描述"
+
+msgid "CSS:"
+msgstr "CSS："
+
+msgid "The standard CSS is:"
+msgstr "标准的CSS是："
+
+msgid "Parameters"
+msgstr "参数"
+
+msgid "Manage translations"
+msgstr "翻译管理"
+
+msgid "Give feedback"
+msgstr "反馈"
+
+msgid "Other plugins"
+msgstr "其他插件"
+
+msgid "The file %s cannot be deleted. You should have a problem with file permissions or security restrictions."
+msgstr "请勿删除文档“%s”，不然会出现文档读取或安全限制的麻烦。"
+
