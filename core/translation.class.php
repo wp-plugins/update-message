@@ -526,12 +526,14 @@ if (!class_exists("translationSL")) {
 										// We identify the $path
 										$path_match = "" ;
 										if ($match[1]!="SL_framework") {
-											foreach ($submenu['sedlex.php'] as $i => $ov) {
-												$url = $ov[2] ; 
-												$plugin_name = explode("/",$url) ;
-												$plugin_name[count($plugin_name)-1] = "lang" ; 
-												if (is_file(WP_PLUGIN_DIR."/".implode("/", $plugin_name)."/".$match[1].".pot")) {
-													$path_match = WP_PLUGIN_DIR."/".implode("/", $plugin_name)."/" ; 
+											if (isset($submenu)) {
+												foreach ($submenu['sedlex.php'] as $i => $ov) {
+													$url = $ov[2] ; 
+													$plugin_name = explode("/",$url) ;
+													$plugin_name[count($plugin_name)-1] = "lang" ; 
+													if (is_file(WP_PLUGIN_DIR."/".implode("/", $plugin_name)."/".$match[1].".pot")) {
+														$path_match = WP_PLUGIN_DIR."/".implode("/", $plugin_name)."/" ; 
+													}
 												}
 											}
 										} else {
@@ -581,59 +583,61 @@ if (!class_exists("translationSL")) {
 			$nb_ligne = 0 ; 
 			$nb_ligne2 = 0 ; 
 			
-			foreach ($submenu['sedlex.php'] as $i => $ov) {
-				$url = $ov[2] ; 
-				$plugin_name = explode("/",$url) ;
-				$plugin_name[count($plugin_name)-1] = "lang" ; 
-				$dir = WP_PLUGIN_DIR."/".implode("/", $plugin_name)."/" ; 
-				if ($ov[2]=="sedlex.php") {
-					$dir = WP_PLUGIN_DIR.'/'.str_replace(basename(  __FILE__),"",plugin_basename( __FILE__)).'lang/'; 
-				}
-				// We scan the folder for new translations file
-				if (is_dir($dir)) {
-					$root = scandir($dir);
-					foreach($root as $value) {
-						if (preg_match("/(.*)-(.*)[.]tmp[0-9]*$/", $value, $match)) {
-							$cible_file = $match[1]."-".$match[2] ; 
-							if (!is_file($dir.$cible_file)) {
-								// The sent translation is new and can be imported without difficulties 
-								$info = translationSL::get_info(file($dir.$match[0]),file($dir.$match[1].".pot")) ; 
-								if ($info['translated']!=0) {
-									$cel1 = new adminCell("<p>".$match[1]."</p>") ;
-									$cel2 = new adminCell("<p>".str_replace(".po", "", $match[2])."</p>") ;
-									$cel3 = new adminCell("<p>".(sprintf(__("%s sentences have been translated (i.e. %s).",'SL_framework'), "<b>".$info['translated']."/".$info['total']."</b>", "<b>".(floor($info['translated']/$info['total']*1000)/10)."%</b>"))."</p>") ;
-									$cel1->add_action(__("Delete", 'SL_framework'), "deleteTranslation('".$dir.$value."')") ; 
-									$cel1->add_action(__("Import",'SL_framework') , "importTranslation('".$dir.$value."', '".$dir.$cible_file."')") ; 
-									$table->add_line(array($cel1, $cel2, $cel3), '1') ;
-									$nb_ligne ++ ; 
-								} else {
-									@unlink($dir.$value) ; 
-								}
-							} else {
-								// The sent translation is NOT new and it should be compare with the existing one before importing 
-								$info = translationSL::compare_info(file($dir.$value),file($dir.$cible_file),file($dir.$match[1].".pot")) ; 
-								$info2 = translationSL::get_info(file($dir.$cible_file),file($dir.$match[1].".pot")) ; 
-								if (($info['modified']!=0) || ($info['new']!=0)) {
-									$cel1 = new adminCell("<p>".$match[1]."</p>") ;
-									$cel2 = new adminCell("<p>".str_replace(".po", "", $match[2])."</p>") ;
-									$cel3 = new adminCell("<p>".(sprintf(__("%s sentences have been newly translated and %s sentences have been modified (the old file has %s translated sentences).",'SL_framework'), "<b>".$info['new']."</b>", "<b>".$info['modified']."</b>", "<b>".$info2['translated']."/".$info2['total']."</b>"))."</p>") ;
-									$cel1->add_action(__("Delete", 'SL_framework'), "deleteTranslation('".$dir.$value."')") ; 
-									if ($info['modified']!=0) {
-										$cel1->add_action(__("See modifications and Merge",'SL_framework') , "seeTranslation('".$dir.$value."', '".$dir.$cible_file."')") ; 
+			if (isset($submenu)) {
+				foreach ($submenu['sedlex.php'] as $i => $ov) {
+					$url = $ov[2] ; 
+					$plugin_name = explode("/",$url) ;
+					$plugin_name[count($plugin_name)-1] = "lang" ; 
+					$dir = WP_PLUGIN_DIR."/".implode("/", $plugin_name)."/" ; 
+					if ($ov[2]=="sedlex.php") {
+						$dir = WP_PLUGIN_DIR.'/'.str_replace(basename(  __FILE__),"",plugin_basename( __FILE__)).'lang/'; 
+					}
+					// We scan the folder for new translations file
+					if (is_dir($dir)) {
+						$root = scandir($dir);
+						foreach($root as $value) {
+							if (preg_match("/(.*)-(.*)[.]tmp[0-9]*$/", $value, $match)) {
+								$cible_file = $match[1]."-".$match[2] ; 
+								if (!is_file($dir.$cible_file)) {
+									// The sent translation is new and can be imported without difficulties 
+									$info = translationSL::get_info(file($dir.$match[0]),file($dir.$match[1].".pot")) ; 
+									if ($info['translated']!=0) {
+										$cel1 = new adminCell("<p>".$match[1]."</p>") ;
+										$cel2 = new adminCell("<p>".str_replace(".po", "", $match[2])."</p>") ;
+										$cel3 = new adminCell("<p>".(sprintf(__("%s sentences have been translated (i.e. %s).",'SL_framework'), "<b>".$info['translated']."/".$info['total']."</b>", "<b>".(floor($info['translated']/$info['total']*1000)/10)."%</b>"))."</p>") ;
+										$cel1->add_action(__("Delete", 'SL_framework'), "deleteTranslation('".$dir.$value."')") ; 
+										$cel1->add_action(__("Import",'SL_framework') , "importTranslation('".$dir.$value."', '".$dir.$cible_file."')") ; 
+										$table->add_line(array($cel1, $cel2, $cel3), '1') ;
+										$nb_ligne ++ ; 
 									} else {
-										$cel1->add_action(__("Merge",'SL_framework') , "mergeTranslation('".$dir.$value."', '".$dir.$cible_file."')") ; 
+										@unlink($dir.$value) ; 
 									}
-									$table2->add_line(array($cel1, $cel2, $cel3), '1') ;
-									$nb_ligne2 ++ ; 
 								} else {
-									@unlink($dir.$value) ; 
+									// The sent translation is NOT new and it should be compare with the existing one before importing 
+									$info = translationSL::compare_info(file($dir.$value),file($dir.$cible_file),file($dir.$match[1].".pot")) ; 
+									$info2 = translationSL::get_info(file($dir.$cible_file),file($dir.$match[1].".pot")) ; 
+									if (($info['modified']!=0) || ($info['new']!=0)) {
+										$cel1 = new adminCell("<p>".$match[1]."</p>") ;
+										$cel2 = new adminCell("<p>".str_replace(".po", "", $match[2])."</p>") ;
+										$cel3 = new adminCell("<p>".(sprintf(__("%s sentences have been newly translated and %s sentences have been modified (the old file has %s translated sentences).",'SL_framework'), "<b>".$info['new']."</b>", "<b>".$info['modified']."</b>", "<b>".$info2['translated']."/".$info2['total']."</b>"))."</p>") ;
+										$cel1->add_action(__("Delete", 'SL_framework'), "deleteTranslation('".$dir.$value."')") ; 
+										if ($info['modified']!=0) {
+											$cel1->add_action(__("See modifications and Merge",'SL_framework') , "seeTranslation('".$dir.$value."', '".$dir.$cible_file."')") ; 
+										} else {
+											$cel1->add_action(__("Merge",'SL_framework') , "mergeTranslation('".$dir.$value."', '".$dir.$cible_file."')") ; 
+										}
+										$table2->add_line(array($cel1, $cel2, $cel3), '1') ;
+										$nb_ligne2 ++ ; 
+									} else {
+										@unlink($dir.$value) ; 
+									}
 								}
 							}
-						}
-					} 
+						} 
+					}
 				}
 			}
-			
+				
 			if ($nb_ligne!=0) {
 				echo "<h3>".__("New translations are available",'SL_framework')."</h3>" ; 
 				echo $table->flush() ;

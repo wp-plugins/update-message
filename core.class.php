@@ -410,7 +410,7 @@ if (!class_exists('pluginSedLex')) {
 			if (!empty($sedlex_list_scripts)) {
 				$list = implode(',',$sedlex_list_scripts) ; 
 				$url = WP_PLUGIN_URL.'/'.str_replace(basename(  __FILE__),"",plugin_basename( __FILE__)).'core/load-scripts.php?c=0&load='.$list ; 
-				wp_enqueue_script('sedlex_scripts', $url, array() ,date('Ymd'));
+				wp_enqueue_script('sedlex_scripts', $url, array('jquery') ,date('Ymd'));
 				$sedlex_list_scripts = array(); 
 			}
 		}

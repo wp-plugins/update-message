@@ -166,7 +166,7 @@ class my_plugin extends pluginSedLex {
 			//===============================================================================================
 			// After this comment, you may modify whatever you want
 			?>
-			<p><? echo __("This is the configuration page of the plugin", $this->pluginID) ;?></p>
+			<p><?php echo __("This is the configuration page of the plugin", $this->pluginID) ;?></p>
 			<?php
 			
 			// We check rights
