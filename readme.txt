@@ -32,6 +32,7 @@ This plugin is under GPL licence.
 * Dutch (Netherlands) translation provided by MichaelWijnands
 * Polish (Poland) translation provided by Kajaczek
 * Portuguese (Portugal) translation provided by PedroNave
+* Chinese (People's Republic of China) translation provided by wensonjo
 
 = Features of the framework =
 
@@ -61,6 +62,9 @@ Have fun !
 3. Configuration of the update box in a post
 
 == Changelog ==
+
+= 1.2.3 & 1.2.4 =
+* Enable the message in the excerpt
 
 = 1.2.2 =
 * Update of the framework
@@ -121,4 +125,4 @@ Have fun !
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:238353c3333d27e56640ad9f5d7fc2fd
+InfoVersion:2ec8dab4a4410630adce6cbd82513b6f

@@ -1,126 +1,131 @@
 Content-Transfer-Encoding: 8bit
 
-#: update-message.php:74
+#: update-message.php:75
 #@ updatemessage
 msgid "If you have been updated this post with new information, use this box to inform about it."
 msgstr ""
 
-#: update-message.php:75
+#: update-message.php:76
 #@ updatemessage
 msgid "Please note that the different update messages have to be separed with 3 dashes:"
 msgstr ""
 
-#: update-message.php:76
+#: update-message.php:77
 #@ updatemessage
 msgid "If you want to force the date displayed, the first line must be %s"
 msgstr ""
 
-#: update-message.php:77
+#: update-message.php:78
 #@ updatemessage
 msgid "Example:"
 msgstr ""
 
-#: update-message.php:79
+#: update-message.php:80
 #@ updatemessage
 msgid "The first message"
 msgstr ""
 
-#: update-message.php:82
+#: update-message.php:83
 #@ updatemessage
 msgid "The second message"
 msgstr ""
 
-#: update-message.php:283
+#: update-message.php:306
 #@ updatemessage
 msgid "This plugin creates information box in posts/page to contain update information"
 msgstr ""
 
-#: update-message.php:300
+#: update-message.php:323
 #@ updatemessage
 msgid "Here is the parameters of the plugin. Please modify them at your convenience."
 msgstr ""
 
-#: update-message.php:303
+#: update-message.php:326
 #@ updatemessage
 msgid "Where do you want to place the update message?"
 msgstr ""
 
-#: update-message.php:304
+#: update-message.php:327
 #@ updatemessage
 msgid "Placement:"
 msgstr ""
 
-#: update-message.php:305
+#: update-message.php:328
 #@ updatemessage
 msgid "You can also add a shorcode %s to add an updated box wherever you want in your posts"
 msgstr ""
 
-#: update-message.php:306
+#: update-message.php:329
 #@ updatemessage
 msgid "Show the update message on home page:"
 msgstr ""
 
-#: update-message.php:307
+#: update-message.php:330
 #@ updatemessage
 msgid "Indicate if you want the update message to be shown in the summary of the posts in your home page."
 msgstr ""
 
-#: update-message.php:309
+#: update-message.php:331
+#@ updatemessage
+msgid "Placement for the excerpt:"
+msgstr ""
+
+#: update-message.php:333
 #@ updatemessage
 msgid "How do you want to render the message?"
 msgstr ""
 
-#: update-message.php:310
+#: update-message.php:334
 #@ updatemessage
 msgid "HTML:"
 msgstr ""
 
-#: update-message.php:311
+#: update-message.php:335
 #@ updatemessage
 msgid "The standard html is:"
 msgstr ""
 
-#: update-message.php:316
+#: update-message.php:340
 #@ updatemessage
 msgid "Published date"
 msgstr ""
 
-#: update-message.php:317
+#: update-message.php:341
 #@ updatemessage
 msgid "Updated date"
 msgstr ""
 
-#: update-message.php:318
+#: update-message.php:342
 #@ updatemessage
 msgid "Updated text"
 msgstr ""
 
-#: update-message.php:320
+#: update-message.php:344
 #@ updatemessage
 msgid "CSS:"
 msgstr ""
 
-#: update-message.php:321
+#: update-message.php:345
 #@ updatemessage
 msgid "The standard CSS is:"
 msgstr ""
 
-#: update-message.php:350
+#: update-message.php:374
 #@ updatemessage
 msgid "Parameters"
 msgstr ""
 
-#: update-message.php:356
+#: update-message.php:380
 #@ updatemessage
 msgid "Manage translations"
 msgstr ""
 
-#: update-message.php:362
+#: update-message.php:386
 #@ updatemessage
 msgid "Give feedback"
 msgstr ""
 
-#: update-message.php:367
+#: update-message.php:391
 #@ updatemessage
 msgid "Other plugins"
 msgstr ""

@@ -3,7 +3,7 @@
 Plugin Name: Update Message
 Plugin Tag: posts, post, update, message
 Description: <p>Add an update box in posts. </p><p>This box can contain a message, for instance in order to point out that the post have been modified of to stress that the post in no longer up to date</p><p>The message can be configured direcly when editing a post. There is a box 'Update message' added on the left.</p><p>Plugin developped from the orginal plugin <a href="http://wordpress.org/extend/plugins/wp-update-message/">WP Update Message</a>. </p><p>This plugin is under GPL licence. </p>
-Version: 1.2.3
+Version: 1.2.4
 
 Author: SedLex
 Author Email: sedlex@sedlex.fr
@@ -38,6 +38,7 @@ class updatemessage extends pluginSedLex {
 		register_deactivation_hook(__FILE__, array($this,'uninstall'));
 		
 		//Paramètres supplementaires
+		$this->is_excerpt = false ; 
 		add_action('save_post', array($this,'update_message_save'));
 		add_filter('the_content', array($this,'update_message_content'));
 		add_filter('get_the_excerpt', array($this,'update_message_excerpt'));
@@ -123,8 +124,16 @@ class updatemessage extends pluginSedLex {
 
 	function update_message_content($content) {
 		global $post ;
+		
+		// If it is the loop and an the_except is called, we leave
+		if (!is_single()) {
+			if ($this->is_excerpt) {
+				$this->is_excerpt = false ; 
+				return $content ; 
+			}
+		}
 
-		if(is_single() || is_page()) {
+		if(is_single() || is_page() || $this->get_param('show_home')) {
 			$update_message_text = trim(get_post_meta($post->ID, 'update_message_text', true));
 			$html = "" ; 
 			// On cree le conteneur HTML
@@ -180,6 +189,7 @@ class updatemessage extends pluginSedLex {
 
 	function update_message_excerpt($content) {
 		global $post ;
+		$this->is_excerpt = true ; 
 		if ($this->get_param('show_home')) {
 			$update_message_text = trim(get_post_meta($post->ID, 'update_message_text', true));
 			$html = "" ; 
@@ -202,14 +212,26 @@ class updatemessage extends pluginSedLex {
 					
 				}
 				
-				$array = $this->get_param('position') ; 
-				$pos = "none" ; 
+				$array = $this->get_param('position_home') ; 
+				$pos = "top" ; 
 				foreach ($array as $a) {
 					if ($a != str_replace("*", "", $a)) {
 						$pos = str_replace("*", "", $a) ;
 					}
 				}
-				$content = $content . $resultat;
+				
+				switch ($pos) {
+					case "top":
+					case "":
+						$content = $resultat . $content;
+						break;
+					case "bottom":
+						$content = $content . $resultat;
+						break;
+					case "both":
+						$content = $resultat . $content . $resultat;
+						break;
+				}
 			}
 		}
 		return $content;
@@ -251,6 +273,7 @@ class updatemessage extends pluginSedLex {
 }' ; break ; 
 
 			case 'position' 	: return array("*top", "bottom", "both", "none") 	; break ; 
+			case 'position_home' 	: return array("*top", "bottom", "both") 	; break ; 
 			case 'show_home' 	: return false	; break ; 
 		}
 		return null ;
@@ -303,8 +326,9 @@ class updatemessage extends pluginSedLex {
 					$params->add_title(__('Where do you want to place the update message?',$this->pluginID)) ; 
 					$params->add_param('position', __('Placement:',$this->pluginID)) ; 
 					$params->add_comment(sprintf(__('You can also add a shorcode %s to add an updated box wherever you want in your posts', $this->pluginID), '<code>[maj update="jj/mm/yy"]your updated text[/maj]</code>')) ; 
-					$params->add_param('show_home', __('Show the update message on home page:',$this->pluginID)) ; 
+					$params->add_param('show_home', __('Show the update message on home page:',$this->pluginID), '', '', array('position_home')) ; 
 					$params->add_comment(__('Indicate if you want the update message to be shown in the summary of the posts in your home page.',$this->pluginID)); 
+					$params->add_param('position_home', __('Placement for the excerpt:',$this->pluginID)) ; 
 
 					$params->add_title(__('How do you want to render the message?',$this->pluginID)) ; 
 					$params->add_param('html', __('HTML:',$this->pluginID)) ; 
