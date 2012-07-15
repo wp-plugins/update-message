@@ -21,6 +21,7 @@ if (!class_exists("translationSL")) {
 		* @param string $plugin the name of the plugin (probably <code>str_replace("/","",str_replace(basename(__FILE__),"",plugin_basename( __FILE__)))</code>)
 		* @return translationSL the translationSL object
 		*/
+		
 		function translationSL($domain, $plugin) {
 			$this->domain = $domain ; 
 			$this->plugin = $plugin ; 
@@ -51,7 +52,6 @@ if (!class_exists("translationSL")) {
     		
 			echo "</div><a name='edit_translation'></a><a name='info'></a>" ; 
 			echo "<div id='zone_edit'></div>" ; 
-
 		}
 
 		/** ====================================================================================================================================================
@@ -65,6 +65,7 @@ if (!class_exists("translationSL")) {
 			$lan = $frmk->get_param('lang') ; 
 			if (is_admin() && ($lan != "")) {
 				$loc = $lan ; 
+				SL_Debug::log(get_class(), "Set locale from ".$loc." to ".$lan."", 4) ; 
 			}
 			return $loc;
 		}
@@ -81,7 +82,6 @@ if (!class_exists("translationSL")) {
 		private function get_php_files($root, $other='') {
 			
 			@chmod($root."/".$other, 0755) ; 
-			
 			$dir=opendir($root."/".$other);
 			
 			$folder = array() ; 
@@ -428,6 +428,7 @@ if (!class_exists("translationSL")) {
 		* @access private
 		* @return void
 		*/
+		
 		function compare_info($content_po1, $content_po2, $content_pot) {
 			// We search in the pot file to check if all sentences are translated
 			$new = 0 ; 
@@ -693,7 +694,8 @@ if (!class_exists("translationSL")) {
 		
 		function deleteTranslation() {
 			$path1 = $_POST['path1'] ; 
-			@unlink($path1) ; 			
+			@unlink($path1) ; 	
+			SL_Debug::log(get_class(), "Delete the translation ".$path1, 4) ; 
 			die() ; 
 		}
 				
@@ -903,6 +905,7 @@ if (!class_exists("translationSL")) {
 			
 			file_put_contents($path2,$content) ;
 			
+			SL_Debug::log(get_class(), "Write the mo file ".$path2, 4) ; 
 			translationSL::phpmo_write_mo_file($hash,preg_replace("/(.*)[.]po/", "$1.mo", $path2)) ; 
 								
 			echo "ok" ; 			
@@ -939,9 +942,7 @@ if (!class_exists("translationSL")) {
 				$subject = "[".ucfirst($plugin)."] New translation (".$lang.")" ; 
 				$info = translationSL::get_info(file(WP_PLUGIN_DIR."/".$plugin."/lang/".$domain ."-".$lang.".po"), file(WP_PLUGIN_DIR."/".$plugin."/lang/".$domain.".pot")) ; 
 			}
-			
-			
-			
+						
 			$message = "" ; 
 			$message .= "<p>"."Dear sirs,"."</p><p>&nbsp;</p>" ; 
 			$message .= "<p>"."Here is attached a new translation ($native)"."</p><p>&nbsp;</p>" ; 
@@ -977,10 +978,12 @@ if (!class_exists("translationSL")) {
 			}
 			// send the email
 			if (wp_mail( $to, $subject, $message, $headers, $attachments )) {
+				SL_Debug::log(get_class(), "Send the translation ".$attachments[0]." to ".$to, 4) ; 
 				echo "<div class='updated  fade'>" ; 
 				echo "<p>".sprintf(__("The translation %s have been sent", 'SL_framework'), "$lang ($native)")."</p>" ; 
 				echo "</div>" ; 
 			} else {
+				SL_Debug::log(get_class(), "The translation ".$attachments[0]." cannot be send to ".$to, 2) ; 
 				echo "<div class='error  fade'>" ; 
 				echo "<p>".__("An error occured sending the email.", 'SL_framework')."</p><p>".__("Make sure that your wordpress is able to send email.", 'SL_framework')."</p>" ; 
 				echo "</div>" ; 			
@@ -1584,6 +1587,7 @@ if (!class_exists("translationSL")) {
 			$lang = preg_replace("/[^a-zA-Z_]/","",$_POST['lang']) ; 
 			$frmk = new coreSLframework() ;
 			$frmk->set_param('lang', $lang) ; 
+			SL_Debug::log(get_class(), "Set the local to ".$lang, 4) ; 
 			die() ;
 		}
 
@@ -1628,8 +1632,10 @@ if (!class_exists("translationSL")) {
 					if ($response_mo !== false){
 						$res = @file_put_contents(WP_LANG_DIR."/".$f, $response_mo) ; 
 						if ($res !== false) {
+							SL_Debug::log(get_class(), "The file ".$f." has been downloaded (version ".$tagged_version.")", 4) ; 
 							$info .= "<p>".sprintf(__("The file %s has been downloaded (version %s)", "SL_framework"), "<code>$f</code>", $tagged_version)."</p>" ; 
 						} else {
+							SL_Debug::log(get_class(), "The file ".$f." cannot be download (version ".$tagged_version.")", 2) ; 
 							$error .= "<p>".sprintf(__("The file %s cannot be stored in %s. Check permissions.", "SL_framework"), "<code>$f</code>", "<code>".WP_LANG_DIR."</code>")."</p>" ; 
 						}
 					} else {
@@ -1637,8 +1643,10 @@ if (!class_exists("translationSL")) {
 						if ($response_mo !== false){
 							$res = @file_put_contents(WP_LANG_DIR."/".$f, $response_mo) ; 
 							if ($res !== false) {
+								SL_Debug::log(get_class(), "The file ".$f." has been downloaded (version ".$root_tagged_version.")", 4) ; 
 								$info .= "<p>".sprintf(__("The file %s has been downloaded (version %s)", "SL_framework"), "<code>$f</code>", $root_tagged_version)."</p>" ; 
 							} else {
+								SL_Debug::log(get_class(), "The file ".$f." cannot be download (version ".$tagged_version.")", 2) ; 
 								$error .= "<p>".sprintf(__("The file %s cannot be stored in %s. Check permissions.", "SL_framework"), "<code>$f</code>", "<code>".WP_LANG_DIR."</code>")."</p>" ; 
 							}
 						}
@@ -1719,7 +1727,8 @@ if (!class_exists("translationSL")) {
 					}
 				}
 			}
-			file_put_contents($path."/lang/".$domain .".pot", $content) ; 
+			SL_Debug::log(get_class(), "The file ".$path."/lang/".$domain .".pot has been downloaded", 4) ; 
+			@file_put_contents($path."/lang/".$domain .".pot", $content) ; 
 		}
 
 		/** ====================================================================================================================================================

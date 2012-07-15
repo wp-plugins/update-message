@@ -3,7 +3,9 @@
 Plugin Name: Update Message
 Plugin Tag: posts, post, update, message
 Description: <p>Add an update box in posts. </p><p>This box can contain a message, for instance in order to point out that the post have been modified of to stress that the post in no longer up to date</p><p>The message can be configured direcly when editing a post. There is a box 'Update message' added on the left.</p><p>Plugin developped from the orginal plugin <a href="http://wordpress.org/extend/plugins/wp-update-message/">WP Update Message</a>. </p><p>This plugin is under GPL licence. </p>
-Version: 1.2.4
+Version: 1.2.5
+
+
 
 Author: SedLex
 Author Email: sedlex@sedlex.fr
@@ -35,7 +37,8 @@ class updatemessage extends pluginSedLex {
 		
 		//Init et des-init
 		register_activation_hook(__FILE__, array($this,'install'));
-		register_deactivation_hook(__FILE__, array($this,'uninstall'));
+		register_deactivation_hook(__FILE__, array($this,'deactivate'));
+		register_uninstall_hook(__FILE__, array($this,'uninstall_removedata'));
 		
 		//Paramètres supplementaires
 		$this->is_excerpt = false ; 
@@ -57,6 +60,20 @@ class updatemessage extends pluginSedLex {
 		return self::$instance;
 	}
 	
+	/** ====================================================================================================================================================
+	* Add a button in the TinyMCE Editor
+	*
+	* To add a new button, copy the commented lines a plurality of times (and uncomment them)
+	* 
+	* @return array of buttons
+	*/
+	
+	function add_tinymce_buttons() {
+		$buttons = array() ; 
+		$buttons[] = array(__('Add Update tags', $this->pluginID), '[maj update="'.date_i18n("d/m/y").'"]', '[/maj]', WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename( __FILE__)).'img/maj_button.png') ; 
+		return $buttons ; 
+	}
+
 	/** ====================================================================================================================================================
 	* Create the meta box for storing the message
 	* 
@@ -319,13 +336,10 @@ class updatemessage extends pluginSedLex {
 			$tabs = new adminTabs() ; 
 			
 			ob_start() ; 
-					?>
-					<p><?php echo __('Here is the parameters of the plugin. Please modify them at your convenience.',$this->pluginID) ; ?> </p>
-					<?php					
 					$params = new parametersSedLex($this, 'tab-parameters') ; 
 					$params->add_title(__('Where do you want to place the update message?',$this->pluginID)) ; 
 					$params->add_param('position', __('Placement:',$this->pluginID)) ; 
-					$params->add_comment(sprintf(__('You can also add a shorcode %s to add an updated box wherever you want in your posts', $this->pluginID), '<code>[maj update="jj/mm/yy"]your updated text[/maj]</code>')) ; 
+					$params->add_comment(sprintf(__('You can also add a shorcode %s to add an updated box wherever you want in your posts', $this->pluginID), '<code>[maj update="dd/mm/yy"]your updated text[/maj]</code>')) ; 
 					$params->add_param('show_home', __('Show the update message on home page:',$this->pluginID), '', '', array('position_home')) ; 
 					$params->add_comment(__('Indicate if you want the update message to be shown in the summary of the posts in your home page.',$this->pluginID)); 
 					$params->add_param('position_home', __('Placement for the excerpt:',$this->pluginID)) ; 
@@ -397,7 +411,7 @@ class updatemessage extends pluginSedLex {
 		<?php
 	}
 	
-	//[maj update="jj/mm/yy"]text[/maj]
+	//[maj update="dd/mm/yy"]text[/maj]
 	
 	function maj_shortcode( $_atts, $text ) {
 		

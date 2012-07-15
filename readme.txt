@@ -6,7 +6,7 @@ Author URI: http://www.sedlex.fr/
 Plugin URI: http://wordpress.org/extend/plugins/update-message/
 Tags: posts, post, update, message
 Requires at least: 3.0
-Tested up to: 3.3.1
+Tested up to: 3.4
 Stable tag: trunk
 
 Add an update box in posts. 
@@ -22,6 +22,10 @@ The message can be configured direcly when editing a post. There is a box 'Updat
 Plugin developped from the orginal plugin WP Update Message. 
 
 This plugin is under GPL licence. 
+
+= Multisite - Wordpress MU =
+
+This plugin works with multisite installation of Wordpress.
 
 = Localization =
 
@@ -63,6 +67,10 @@ Have fun !
 
 == Changelog ==
 
+= 1.2.5 =
+* Enable the multisite
+* Add a button in the Editor
+
 = 1.2.3 & 1.2.4 =
 * Enable the message in the excerpt
 
@@ -75,47 +83,23 @@ Have fun !
 = 1.2.0 =
 * Major release of the framework
 
-= 1.1.7 =
+= 1.1.0 -&gt; 1.1.7 =
 * Greek translation (by skyrodos)
-
-= 1.1.6 =
 * Improve English text thanks to Rene
-
-= 1.1.5 =
 * German translation (by klotzi703611)
-
-= 1.1.4 =
 * Polish translation (by Kajaczek)
-
-= 1.1.3 =
 * Netherlands translation (by MichaelWijnands)
-
-= 1.1.2 =
 * Update of the core
-
-= 1.1.1 =
 * Portugese translation (by PedroNave)
-
-= 1.1.0 =
 * SVN support
 
-= 1.0.6 =
+= 1.0.0 -&gt; 1.0.6 =
 * Update of the core
-
-= 1.0.5 =
 * ZipArchive class has been suppressed and pclzip is used instead
-
-= 1.0.4 =
 * Ensure that folders and files permissions are correct for an adequate behavior
-
-= 1.0.3 =
 * The update message may be integrated with a shortcode [maj]
 * Enhance translations, feedback and other plugins
-
-= 1.0.2 =
 * Update of the framework (3.0)
-
-= 1.0.1 =
 * First release in the wild web (enjoy)
 
 == Frequently Asked Questions ==
@@ -125,4 +109,4 @@ Have fun !
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:2ec8dab4a4410630adce6cbd82513b6f
+InfoVersion:fd41281cb0adc1e753a6c3b3a291017e
