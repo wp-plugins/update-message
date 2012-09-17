@@ -67,6 +67,9 @@ Have fun !
 
 == Changelog ==
 
+= 1.2.6 =
+* Correct a bug with some installation and the button
+
 = 1.2.5 =
 * Enable the multisite
 * Add a button in the Editor
@@ -109,4 +112,4 @@ Have fun !
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:14fff77953a4faec32541be5ffd57e59
+InfoVersion:a8e3bde531e4eacc335538d33ed755ab
