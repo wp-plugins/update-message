@@ -3,7 +3,8 @@
 Plugin Name: Update Message
 Plugin Tag: posts, post, update, message
 Description: <p>Add an update box in posts. </p><p>This box can contain a message, for instance in order to point out that the post have been modified of to stress that the post in no longer up to date</p><p>The message can be configured direcly when editing a post. There is a box 'Update message' added on the left.</p><p>Plugin developped from the orginal plugin <a href="http://wordpress.org/extend/plugins/wp-update-message/">WP Update Message</a>. </p><p>This plugin is under GPL licence. </p>
-Version: 1.2.6
+Version: 1.2.7
+
 
 
 
@@ -24,7 +25,7 @@ class updatemessage extends pluginSedLex {
 	* @return void
 	*/
 	static $instance = false;
-	static $path = false;
+	var $path = false;
 
 	protected function _init() {
 		global $wpdb ; 
@@ -38,16 +39,12 @@ class updatemessage extends pluginSedLex {
 		//Init et des-init
 		register_activation_hook(__FILE__, array($this,'install'));
 		register_deactivation_hook(__FILE__, array($this,'deactivate'));
-		register_uninstall_hook(__FILE__, array($this,'uninstall_removedata'));
+		register_uninstall_hook(__FILE__, array('updatemessage','uninstall_removedata'));
 		
 		//Paramètres supplementaires
-		$this->is_excerpt = false ; 
 		add_action('save_post', array($this,'update_message_save'));
-		add_filter('the_content', array($this,'update_message_content'));
-		add_filter('get_the_excerpt', array($this,'update_message_excerpt'));
 		add_action('admin_menu', array($this, 'meta_box'));
-		add_shortcode( 'maj', array( $this, 'maj_shortcode' ) );
-		add_action('wp_print_styles', array( $this, 'ajoute_inline_css'));
+		add_shortcode('maj', array( $this, 'maj_shortcode' ) );
 	}
 	
 	/**
@@ -58,6 +55,37 @@ class updatemessage extends pluginSedLex {
 			self::$instance = new self;
 		}
 		return self::$instance;
+	}
+	
+	/** ====================================================================================================================================================
+	* In order to uninstall the plugin, few things are to be done ... 
+	* (do not modify this function)
+	* 
+	* @return void
+	*/
+	
+	public function uninstall_removedata () {
+		global $wpdb ;
+		// DELETE OPTIONS
+		delete_option('updatemessage'.'_options') ;
+		if (is_multisite()) {
+			delete_site_option('updatemessage'.'_options') ;
+		}
+		
+		// DELETE SQL
+		if (function_exists('is_multisite') && is_multisite()){
+			$old_blog = $wpdb->blogid;
+			$old_prefix = $wpdb->prefix ; 
+			// Get all blog ids
+			$blogids = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM ".$wpdb->blogs));
+			foreach ($blogids as $blog_id) {
+				switch_to_blog($blog_id);
+				$wpdb->query("DROP TABLE ".str_replace($old_prefix, $wpdb->prefix, $wpdb->prefix . "pluginSL_" . 'updatemessage')) ; 
+			}
+			switch_to_blog($old_blog);
+		} else {
+			$wpdb->query("DROP TABLE ".$wpdb->prefix . "pluginSL_" . 'updatemessage' ) ; 
+		}
 	}
 	
 	/** ====================================================================================================================================================
@@ -108,6 +136,12 @@ class updatemessage extends pluginSedLex {
 	*/
 	
 	function update_message_save($post_id) {
+		global $_POST ; 
+		
+		if (!isset($_POST['myplugin_noncename'])) {
+			return $post_id; 
+		}
+		
 		if ( !wp_verify_nonce( $_POST['myplugin_noncename'], plugin_basename(__FILE__) )) {
 			return $post_id;
 		}
@@ -134,23 +168,64 @@ class updatemessage extends pluginSedLex {
 	}
 	
 	/** ====================================================================================================================================================
-	* Printing the message of update in the post
-	* 
-	* @return variant of the option
+	* Called when the content is displayed
+	*
+	* @param string $content the content which will be displayed
+	* @param string $type the type of the article (e.g. post, page, custom_type1, etc.)
+	* @param boolean $excerpt if the display is performed during the loop
+	* @return string the new content
 	*/
-
-	function update_message_content($content) {
+	
+	function _modify_content($content, $type, $excerpt) {	
 		global $post ;
 		
-		// If it is the loop and an the_except is called, we leave
-		if (!is_single()) {
-			if ($this->is_excerpt) {
-				$this->is_excerpt = false ; 
-				return $content ; 
+		if ($excerpt) {
+			if ($this->get_param('show_home')) {
+				$update_message_text = trim(get_post_meta($post->ID, 'update_message_text', true));
+				$html = "" ; 
+				// On cree le conteneur HTML
+				if ($update_message_text != '') {
+				
+					$all_msg = split("---",$update_message_text) ; 
+					$resultat = "" ; 
+					$html = stripslashes($this->get_param('html')) ; 
+					foreach ($all_msg as $a) {
+			
+						preg_match('|\*([0-3][0-9])\/([0-1][0-9])\/([0-9]{2})\*|',$a, $date) ; 
+						$a = trim(str_replace("*".$date[1]."/".$date[2]."/".$date[3]."*", "", $a)) ; 
+						
+						$b = str_replace('%ud%', date_i18n(get_option('date_format'), mktime(0,0,0,$date[2], $date[1], $date[3])), $html);
+						$b = str_replace('%pd%', get_the_time(), $b);
+						$b = str_replace('%ut%', $a, $b);
+						
+						$resultat .= $b ; 
+						
+					}
+					
+					$array = $this->get_param('position_home') ; 
+					$pos = "top" ; 
+					foreach ($array as $a) {
+						if ($a != str_replace("*", "", $a)) {
+							$pos = str_replace("*", "", $a) ;
+						}
+					}
+					
+					switch ($pos) {
+						case "top":
+						case "":
+							$content = $resultat . $content;
+							break;
+						case "bottom":
+							$content = $content . $resultat;
+							break;
+						case "both":
+							$content = $resultat . $content . $resultat;
+							break;
+					}
+				}
 			}
-		}
-
-		if(is_single() || is_page() || $this->get_param('show_home')) {
+			return $content;		
+		} else {
 			$update_message_text = trim(get_post_meta($post->ID, 'update_message_text', true));
 			$html = "" ; 
 			// On cree le conteneur HTML
@@ -192,68 +267,11 @@ class updatemessage extends pluginSedLex {
 						$content = $resultat . $content . $resultat;
 						break;
 				}
-			}
+			}		
+			return $content;
 		}
-		
-		return $content;
 	}
 	
-	/** ====================================================================================================================================================
-	* Printing the message of update in the excerpt
-	* 
-	* @return variant of the option
-	*/
-
-	function update_message_excerpt($content) {
-		global $post ;
-		$this->is_excerpt = true ; 
-		if ($this->get_param('show_home')) {
-			$update_message_text = trim(get_post_meta($post->ID, 'update_message_text', true));
-			$html = "" ; 
-			// On cree le conteneur HTML
-			if ($update_message_text != '') {
-			
-				$all_msg = split("---",$update_message_text) ; 
-				$resultat = "" ; 
-				$html = stripslashes($this->get_param('html')) ; 
-				foreach ($all_msg as $a) {
-		
-					preg_match('|\*([0-3][0-9])\/([0-1][0-9])\/([0-9]{2})\*|',$a, $date) ; 
-					$a = trim(str_replace("*".$date[1]."/".$date[2]."/".$date[3]."*", "", $a)) ; 
-					
-					$b = str_replace('%ud%', date_i18n(get_option('date_format'), mktime(0,0,0,$date[2], $date[1], $date[3])), $html);
-					$b = str_replace('%pd%', get_the_time(), $b);
-					$b = str_replace('%ut%', $a, $b);
-					
-					$resultat .= $b ; 
-					
-				}
-				
-				$array = $this->get_param('position_home') ; 
-				$pos = "top" ; 
-				foreach ($array as $a) {
-					if ($a != str_replace("*", "", $a)) {
-						$pos = str_replace("*", "", $a) ;
-					}
-				}
-				
-				switch ($pos) {
-					case "top":
-					case "":
-						$content = $resultat . $content;
-						break;
-					case "bottom":
-						$content = $content . $resultat;
-						break;
-					case "both":
-						$content = $resultat . $content . $resultat;
-						break;
-				}
-			}
-		}
-		return $content;
-	}
-
 	/** ====================================================================================================================================================
 	* Define the default option value of the plugin
 	* 
@@ -297,12 +315,15 @@ class updatemessage extends pluginSedLex {
 	}
 
 	/** ====================================================================================================================================================
-	* Add CSS
-	* 
+	* Init css for the public side
+	* If you want to load a style sheet, please type :
+	*	<code>$this->add_inline_css($css_text);</code>
+	*	<code>$this->add_css($css_url_file);</code>
+	*
 	* @return void
 	*/
 	
-	function ajoute_inline_css() {
+	function _public_css_load() {	
 		$this->add_inline_css($this->get_param('css')) ; 
 	}
 	

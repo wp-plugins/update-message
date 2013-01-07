@@ -6,7 +6,7 @@ Author URI: http://www.sedlex.fr/
 Plugin URI: http://wordpress.org/extend/plugins/update-message/
 Tags: posts, post, update, message
 Requires at least: 3.0
-Tested up to: 3.4
+Tested up to: 3.5
 Stable tag: trunk
 
 Add an update box in posts. 
@@ -29,10 +29,11 @@ This plugin works with multisite installation of Wordpress.
 
 = Localization =
 
-* German (Germany) translation provided by klotzi703611
+* German (Germany) translation provided by klotzi703611, RobertBergholz
 * Greek (Greece) translation provided by skyrodos
 * English (United States), default language
 * French (France) translation provided by SedLex
+* Italian (Italy) translation provided by DarioDaniele
 * Dutch (Netherlands) translation provided by MichaelWijnands
 * Polish (Poland) translation provided by Kajaczek
 * Portuguese (Portugal) translation provided by PedroNave
@@ -66,6 +67,9 @@ Have fun !
 3. Configuration of the update box in a post
 
 == Changelog ==
+
+= 1.2.7 =
+* Update the core
 
 = 1.2.6 =
 * Correct a bug with some installation and the button
@@ -112,4 +116,4 @@ Have fun !
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:a8e3bde531e4eacc335538d33ed755ab
+InfoVersion:22ecde5c50ab9422221df1dce65970ca
