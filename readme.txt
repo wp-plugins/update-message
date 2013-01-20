@@ -68,6 +68,9 @@ Have fun !
 
 == Changelog ==
 
+= 1.2.8 =
+* Issue with some installation with locale
+
 = 1.2.7 =
 * Update the core
 
@@ -116,4 +119,4 @@ Have fun !
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:22ecde5c50ab9422221df1dce65970ca
+InfoVersion:552efba7c2625b174b2c1e719d6b5b71
