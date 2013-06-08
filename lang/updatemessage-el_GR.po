@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2011-12-24T06:07:29+00:00\n"
+"PO-Revision-Date: 2013-04-07T16:29:17+00:00\n"
 "Last-Translator: skyrodos <info@skygr.gr>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,9 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes\n"
+
+msgid "Add Update tags"
+msgstr ""
 
 msgid "If you have been updated this post with new information, use this box to inform about it."
 msgstr "Χρησιμοποιείστε το box για να πληροφορήσετε πως έγινε ανανέωση"
@@ -41,9 +44,6 @@ msgstr "Το δεύτερο μήνημα"
 msgid "This plugin creates information box in posts/page to contain update information"
 msgstr "Το πρόσθετο δημιουργεί κουτί πληροφορίας στο άρθρο με όλες τις πληροφορίες ανανέωσης"
 
-msgid "Here is the parameters of the plugin. Please modify them at your convenience."
-msgstr "Κάντε τις αλλαγές που θέλετε στις παραμέτρους του πρόσθετου"
-
 msgid "Where do you want to place the update message?"
 msgstr "Πού θέλετε να εμφανίζεται το μήνυμα για την ανανέωση;"
 
@@ -51,7 +51,16 @@ msgid "Placement:"
 msgstr "Θέσεις:"
 
 msgid "You can also add a shorcode %s to add an updated box wherever you want in your posts"
-msgstr "Μπορείτε να χρησιμοποιήσετε shortcode για να προστεθεί σε κουτί όπου θέλετε μέσα στο άρθρο"
+msgstr "Μπορείτε να χρησιμοποιήσετε shortcode %s για να προστεθεί σε κουτί όπου θέλετε μέσα στο άρθρο"
+
+msgid "Show the update message on home page:"
+msgstr ""
+
+msgid "Indicate if you want the update message to be shown in the summary of the posts in your home page."
+msgstr ""
+
+msgid "Placement for the excerpt:"
+msgstr ""
 
 msgid "How do you want to render the message?"
 msgstr "Πώς θέλετε να καταστήσετε το μήνυμα;"

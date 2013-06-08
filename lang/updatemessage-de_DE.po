@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-07-22T13:26:21+00:00\n"
+"PO-Revision-Date: 2013-04-07T16:27:52+00:00\n"
 "Last-Translator: klotzi703611 <>\n"
 "Last-Translator: RobertBergholz <mail@robertbergholz.de>\n"
 "Language-Team: \n"
@@ -21,6 +21,9 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes\n"
 
+msgid "Add Update tags"
+msgstr ""
+
 msgid "If you have been updated this post with new information, use this box to inform about it."
 msgstr "Wenn Sie wurden dieses Thema mit neuen Informationen aktualisiert, verwenden Sie dieses Kästchen, um darüber zu informieren."
 
@@ -28,7 +31,7 @@ msgid "Please note that the different update messages have to be separed with 3 
 msgstr "Bitte beachten Sie, dass die verschiedenen Update-Nachrichten, mit drei Strichen getrennt werden müssen."
 
 msgid "If you want to force the date displayed, the first line must be %s"
-msgstr "Wenn Sie zu zwingen, das Datum angezeigt werden soll, muss die erste Zeile% s werden"
+msgstr "Wenn Sie zu zwingen, das Datum angezeigt werden soll, muss die erste Zeile %s werden"
 
 msgid "Example:"
 msgstr "Beispiel"
@@ -42,9 +45,6 @@ msgstr "Die zweite Meldung"
 msgid "This plugin creates information box in posts/page to contain update information"
 msgstr "Dieses Plugin erzeugt Info-Box in Beiträgen / Seite zu aktualisieren Informationen enthalten"
 
-msgid "Here is the parameters of the plugin. Please modify them at your convenience."
-msgstr "Hier ist die Parameter des Plugins. Bitte ändern Sie sie an Ihrer Bequemlichkeit."
-
 msgid "Where do you want to place the update message?"
 msgstr "Wo wollen Sie die Update-Meldung statt?"
 
@@ -52,7 +52,16 @@ msgid "Placement:"
 msgstr "Platzierung:"
 
 msgid "You can also add a shorcode %s to add an updated box wherever you want in your posts"
-msgstr "Sie können auch einen shorcode% s, um eine aktualisierte Feld hinzufügen, wo auch immer Sie in Ihren Beiträgen wollen"
+msgstr "Sie können auch einen shorcode %s, um eine aktualisierte Feld hinzufügen, wo auch immer Sie in Ihren Beiträgen wollen"
+
+msgid "Show the update message on home page:"
+msgstr "Aktualisierung auf der Startseite anzeigen."
+
+msgid "Indicate if you want the update message to be shown in the summary of the posts in your home page."
+msgstr ""
+
+msgid "Placement for the excerpt:"
+msgstr ""
 
 msgid "How do you want to render the message?"
 msgstr "Wie wollen Sie die Meldung zu machen?"
@@ -72,33 +81,21 @@ msgstr "Update-Datum"
 msgid "Updated text"
 msgstr "Update-Text"
 
+msgid "CSS:"
+msgstr "CSS"
+
+msgid "The standard CSS is:"
+msgstr ""
+
 msgid "Parameters"
 msgstr "Parameter"
 
 msgid "Manage translations"
 msgstr "Übersetzungen verwalten"
 
-msgid "This form is an easy way to contact the author and to discuss issues / incompatibilities / etc."
-msgstr "Dieses Formular ist eine einfache Möglichkeit, den Autor zu kontaktieren und Fragen / Unverträglichkeiten / etc. diskutieren"
-
 msgid "Give feedback"
 msgstr "Feedback"
 
-msgid "Here is the plugins developped by the author"
-msgstr "Hier ist die Plugins vom Autor entwickelte"
-
-msgid "Other possible plugins"
-msgstr "Andere mögliche plugins"
-
-msgid "Here is the plugins developped by the author:"
-msgstr "Hier ist die Plugins vom Autor entwickelt:"
-
-msgid "CSS:"
-msgstr "CSS"
-
 msgid "Other plugins"
 msgstr "Andere Plugins"
-
-msgid "Show the update message on home page:"
-msgstr "Aktualisierung auf der Startseite anzeigen."
 

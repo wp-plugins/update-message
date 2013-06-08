@@ -3,7 +3,7 @@
 Author: SedLex
 Contributors: SedLex
 Author URI: http://www.sedlex.fr/
-Plugin URI: http://wordpress.org/extend/plugins/update-message/
+Plugin URI: http://wordpress.org/plugins/update-message/
 Tags: posts, post, update, message
 Requires at least: 3.0
 Tested up to: 3.5
@@ -68,6 +68,9 @@ Have fun !
 
 == Changelog ==
 
+= 1.2.10 =
+* Update core
+
 = 1.2.9 =
 * Lighten the plugin and add translations
 
@@ -122,4 +125,4 @@ Have fun !
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:091f3cdcbd28f703624d706aecfca227
+InfoVersion:8ee417cec2e7dedcb26dd87c53a1e571
