@@ -1,2 +1,0 @@
-Expiration date
-http://wordpress.org/support/topic/bugs-with-various-other-plugins-when-enabled

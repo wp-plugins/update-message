@@ -2,8 +2,8 @@
 /**
 Plugin Name: Update Message
 Plugin Tag: posts, post, update, message
-Description: <p>Add an update box in posts. </p><p>This box can contain a message, for instance in order to point out that the post have been modified of to stress that the post in no longer up to date</p><p>The message can be configured direcly when editing a post. There is a box 'Update message' added on the left.</p><p>Plugin developped from the orginal plugin <a href="http://wordpress.org/extend/plugins/wp-update-message/">WP Update Message</a>. </p><p>This plugin is under GPL licence. </p>
-Version: 1.2.10
+Description: <p>Add an update box in posts. </p><p>This box can contain a message, for instance in order to point out that the post have been modified of to stress that the post in no longer up to date</p><p>The message can be configured direcly when editing a post. There is a box 'Update message' added on the left.</p><p>In addition, you may use a shortcode [maj update='dd/mm/yy' expire='dd/mm/yy']xxx[/maj]</p><p>Plugin developped from the orginal plugin <a href="http://wordpress.org/plugins/wp-update-message/">WP Update Message</a>. </p><p>This plugin is under GPL licence. </p>
+Version: 1.3.0
 Author: SedLex
 Author Email: sedlex@sedlex.fr
 Framework Email: sedlex@sedlex.fr
@@ -94,7 +94,7 @@ class updatemessage extends pluginSedLex {
 	
 	function add_tinymce_buttons() {
 		$buttons = array() ; 
-		$buttons[] = array(__('Add Update tags', $this->pluginID), '[maj update="'.date_i18n("d/m/y").'"]', '[/maj]', WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename( __FILE__)).'img/maj_button.png') ; 
+		$buttons[] = array(__('Add Update tags', $this->pluginID), '[maj update="'.date_i18n("d/m/y").'"]', '[/maj]', plugin_dir_url("/").'/'.str_replace(basename( __FILE__),"",plugin_basename( __FILE__)).'img/maj_button.png') ; 
 		return $buttons ; 
 	}
 
@@ -190,7 +190,7 @@ class updatemessage extends pluginSedLex {
 						preg_match('|\*([0-3][0-9])\/([0-1][0-9])\/([0-9]{2})\*|',$a, $date) ; 
 						$a = trim(str_replace("*".$date[1]."/".$date[2]."/".$date[3]."*", "", $a)) ; 
 						
-						$b = str_replace('%ud%', date_i18n(get_option('date_format'), mktime(0,0,0,$date[2], $date[1], $date[3])), $html);
+						$b = str_replace('%ud%', date_i18n(get_option('date_format'), strtotime($date[2]."/".$date[1]."/".$date[3])), $html);
 						$b = str_replace('%pd%', get_the_time(), $b);
 						$b = str_replace('%ut%', $a, $b);
 						
@@ -236,7 +236,7 @@ class updatemessage extends pluginSedLex {
 					preg_match('|\*([0-3][0-9])\/([0-1][0-9])\/([0-9]{2})\*|',$a, $date) ; 
 					$a = trim(str_replace("*".$date[1]."/".$date[2]."/".$date[3]."*", "", $a)) ; 
 					
-					$b = str_replace('%ud%', date_i18n(get_option('date_format'), mktime(0,0,0,$date[2], $date[1], $date[3])), $html);
+					$b = str_replace('%ud%', date_i18n(get_option('date_format'), strtotime($date[2]."/".$date[1]."/".$date[3])), $html);
 					$b = str_replace('%pd%', get_the_time(), $b);
 					$b = str_replace('%ut%', $a, $b);
 					
@@ -357,7 +357,7 @@ class updatemessage extends pluginSedLex {
 					$params = new parametersSedLex($this, 'tab-parameters') ; 
 					$params->add_title(__('Where do you want to place the update message?',$this->pluginID)) ; 
 					$params->add_param('position', __('Placement:',$this->pluginID)) ; 
-					$params->add_comment(sprintf(__('You can also add a shorcode %s to add an updated box wherever you want in your posts', $this->pluginID), '<code>[maj update="dd/mm/yy"]your updated text[/maj]</code>')) ; 
+					$params->add_comment(sprintf(__('You can also add a shorcode %s to add an updated box wherever you want in your posts', $this->pluginID), '<code>[maj update="dd/mm/yy" expire="dd/mm/yy"]your updated text[/maj]</code>')) ; 
 					$params->add_param('show_home', __('Show the update message on home page:',$this->pluginID), '', '', array('position_home')) ; 
 					$params->add_comment(__('Indicate if you want the update message to be shown in the summary of the posts in your home page.',$this->pluginID)); 
 					$params->add_param('position_home', __('Placement for the excerpt:',$this->pluginID)) ; 
@@ -403,24 +403,24 @@ class updatemessage extends pluginSedLex {
 					$params->add_comment($comment) ; 						
 					$params->flush() ; 
 					
-			$tabs->add_tab(__('Parameters',  $this->pluginID), ob_get_clean() , WP_PLUGIN_URL.'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/tab_param.png") ; 	
+			$tabs->add_tab(__('Parameters',  $this->pluginID), ob_get_clean() , plugin_dir_url("/").'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/tab_param.png") ; 	
 			
 			ob_start() ; 
 				$plugin = str_replace("/","",str_replace(basename(__FILE__),"",plugin_basename( __FILE__))) ; 
 				$trans = new translationSL($this->pluginID, $plugin) ; 
 				$trans->enable_translation() ; 
-			$tabs->add_tab(__('Manage translations',  $this->pluginID), ob_get_clean(), WP_PLUGIN_URL.'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/tab_trad.png" ) ; 	
+			$tabs->add_tab(__('Manage translations',  $this->pluginID), ob_get_clean(), plugin_dir_url("/").'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/tab_trad.png" ) ; 	
 
 			ob_start() ; 
 				$plugin = str_replace("/","",str_replace(basename(__FILE__),"",plugin_basename( __FILE__))) ; 
 				$trans = new feedbackSL($plugin, $this->pluginID) ; 
 				$trans->enable_feedback() ; 
-			$tabs->add_tab(__('Give feedback',  $this->pluginID), ob_get_clean() , WP_PLUGIN_URL.'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/tab_mail.png") ; 	
+			$tabs->add_tab(__('Give feedback',  $this->pluginID), ob_get_clean() , plugin_dir_url("/").'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/tab_mail.png") ; 	
 			
 			ob_start() ; 
 				$trans = new otherPlugins("sedLex", array('wp-pirates-search')) ; 
 				$trans->list_plugins() ; 
-			$tabs->add_tab(__('Other plugins',  $this->pluginID), ob_get_clean() , WP_PLUGIN_URL.'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/tab_plug.png") ; 	
+			$tabs->add_tab(__('Other plugins',  $this->pluginID), ob_get_clean() , plugin_dir_url("/").'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/tab_plug.png") ; 	
 			
 			echo $tabs->flush() ; 
 			
@@ -429,20 +429,27 @@ class updatemessage extends pluginSedLex {
 		<?php
 	}
 	
-	//[maj update="dd/mm/yy"]text[/maj]
+	//[maj update="dd/mm/yy" expire="dd/mm/yy"]text[/maj]
 	
 	function maj_shortcode( $_atts, $text ) {
 		
 		$atts = shortcode_atts( array(
-			'update' => ""
+			'update' => "", 
+			'expire' => ""
 		), $_atts );
 		
 		$html = stripslashes($this->get_param('html')) ; 
 		
-		
+		// expire
+		if (preg_match('|([0-3][0-9])\/([0-1][0-9])\/([0-9]{2})|',$atts['expire'], $exp_date)) {
+			$exp_time = strtotime($exp_date[2]."/".$exp_date[1]."/".$exp_date[3]) ; 
+			if ($exp_time<time()) {
+				return "" ; // On retourne rien car on ne veut plus l'afficher
+			}
+		}
 		
 		if (preg_match('|([0-3][0-9])\/([0-1][0-9])\/([0-9]{2})|',$atts['update'], $date)) { 
-			$b = str_replace('%ud%', date_i18n(get_option('date_format'), mktime(0,0,0,$date[2], $date[1], $date[3])), $html);
+			$b = str_replace('%ud%', date_i18n(get_option('date_format'), strtotime($date[2]."/".$date[1]."/".$date[3])), $html);
 		} else {
 			$b = str_replace('%ud%', $atts['update'], $html);
 		}

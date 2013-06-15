@@ -19,6 +19,8 @@ This box can contain a message, for instance in order to point out that the post
 
 The message can be configured direcly when editing a post. There is a box 'Update message' added on the left.
 
+In addition, you may use a shortcode [maj update='dd/mm/yy' expire='dd/mm/yy']xxx[/maj]
+
 Plugin developped from the orginal plugin WP Update Message. 
 
 This plugin is under GPL licence. 
@@ -68,35 +70,21 @@ Have fun !
 
 == Changelog ==
 
-= 1.2.10 =
+= 1.3.0 =
+* Expiration date now possible in the shortcode
+* HTTPS now supported
+
+= 1.2.0 -&gt; 1.2.10 =
 * Update core
-
-= 1.2.9 =
 * Lighten the plugin and add translations
-
-= 1.2.8 =
 * Issue with some installation with locale
-
-= 1.2.7 =
 * Update the core
-
-= 1.2.6 =
 * Correct a bug with some installation and the button
-
-= 1.2.5 =
 * Enable the multisite
 * Add a button in the Editor
-
-= 1.2.3 & 1.2.4 =
 * Enable the message in the excerpt
-
-= 1.2.2 =
 * Update of the framework
-
-= 1.2.1 =
 * The date format may be adapted. The format used will be the default wordpress format
-
-= 1.2.0 =
 * Major release of the framework
 
 = 1.1.0 -&gt; 1.1.7 =
@@ -125,4 +113,4 @@ Have fun !
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:8ee417cec2e7dedcb26dd87c53a1e571
+InfoVersion:60fc3c69736c95527ca39409bd9edcf0
