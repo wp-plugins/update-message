@@ -6,7 +6,7 @@ Author URI: http://www.sedlex.fr/
 Plugin URI: http://wordpress.org/plugins/update-message/
 Tags: posts, post, update, message
 Requires at least: 3.0
-Tested up to: 3.7.1
+Tested up to: 3.8.1
 Stable tag: trunk
 
 Add an update box in posts. 
@@ -71,6 +71,9 @@ Have fun !
 
 == Changelog ==
 
+= 1.3.2 =
+* BUG : split is deprecated in PHP 5.3.0
+
 = 1.3.1 =
 * Issue solved with the published date
 
@@ -117,4 +120,4 @@ Have fun !
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:48e26456d965ec2ece5e207c2c43db74
+InfoVersion:4e79df0e1da9844aa394f9f060aba4c2

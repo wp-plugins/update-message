@@ -3,7 +3,7 @@
 Plugin Name: Update Message
 Plugin Tag: posts, post, update, message
 Description: <p>Add an update box in posts. </p><p>This box can contain a message, for instance in order to point out that the post have been modified of to stress that the post in no longer up to date</p><p>The message can be configured direcly when editing a post. There is a box 'Update message' added on the left.</p><p>In addition, you may use a shortcode [maj update='dd/mm/yy' expire='dd/mm/yy']xxx[/maj]</p><p>Plugin developped from the orginal plugin <a href="http://wordpress.org/plugins/wp-update-message/">WP Update Message</a>. </p><p>This plugin is under GPL licence. </p>
-Version: 1.3.1
+Version: 1.3.2
 Author: SedLex
 Author Email: sedlex@sedlex.fr
 Framework Email: sedlex@sedlex.fr
@@ -149,7 +149,7 @@ class updatemessage extends pluginSedLex {
 			if ( !current_user_can( 'edit_post', $post_id ))
 				return $post_id;
 		}
-		$all_msg = split("---",$_POST['update_message_text']) ; 
+		$all_msg = explode("---",$_POST['update_message_text']) ; 
 		$resultat = "" ; 
 		foreach ($all_msg as $a) {
 			if ($resultat!="")
@@ -182,7 +182,7 @@ class updatemessage extends pluginSedLex {
 				// On cree le conteneur HTML
 				if ($update_message_text != '') {
 				
-					$all_msg = split("---",$update_message_text) ; 
+					$all_msg = explode("---",$update_message_text) ; 
 					$resultat = "" ; 
 					$html = stripslashes($this->get_param('html')) ; 
 					foreach ($all_msg as $a) {
@@ -228,7 +228,7 @@ class updatemessage extends pluginSedLex {
 			if ($update_message_text != '') {
 			
 			
-				$all_msg = split("---",$update_message_text) ; 
+				$all_msg = explode("---",$update_message_text) ; 
 				$resultat = "" ; 
 				$html = stripslashes($this->get_param('html')) ; 
 				foreach ($all_msg as $a) {
