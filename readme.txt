@@ -71,6 +71,9 @@ Have fun !
 
 == Changelog ==
 
+= 1.3.3 =
+* Few enhancements
+
 = 1.3.2 =
 * BUG : split is deprecated in PHP 5.3.0
 
@@ -120,4 +123,4 @@ Have fun !
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:4e79df0e1da9844aa394f9f060aba4c2
+InfoVersion:75cd875a1f9141edf9d5d2400e84d06e
