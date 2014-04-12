@@ -6,7 +6,7 @@ Author URI: http://www.sedlex.fr/
 Plugin URI: http://wordpress.org/plugins/update-message/
 Tags: posts, post, update, message
 Requires at least: 3.0
-Tested up to: 3.8.1
+Tested up to: 3.8.2
 Stable tag: trunk
 
 Add an update box in posts. 
@@ -71,6 +71,9 @@ Have fun !
 
 == Changelog ==
 
+= 1.3.4 =
+* NEW: Improve the look of the plugin
+
 = 1.3.3 =
 * Few enhancements
 
@@ -123,4 +126,4 @@ Have fun !
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:ba0c0ec870dfcdb3231603909c00c5bd
+InfoVersion:44a96f4bb83910433e78ae003a792777
