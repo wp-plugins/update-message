@@ -3,8 +3,7 @@
 Plugin Name: Update Message
 Plugin Tag: posts, post, update, message
 Description: <p>Add an update box in posts. </p><p>This box can contain a message, for instance in order to point out that the post have been modified of to stress that the post in no longer up to date</p><p>The message can be configured direcly when editing a post. There is a box 'Update message' added on the left.</p><p>In addition, you may use a shortcode [maj update='dd/mm/yy' expire='dd/mm/yy']xxx[/maj]</p><p>Plugin developped from the orginal plugin <a href="http://wordpress.org/plugins/wp-update-message/">WP Update Message</a>. </p><p>This plugin is under GPL licence. </p>
-Version: 1.3.4
-
+Version: 1.3.5
 Author: SedLex
 Author Email: sedlex@sedlex.fr
 Framework Email: sedlex@sedlex.fr
@@ -340,8 +339,6 @@ class updatemessage extends pluginSedLex {
 		<div class="plugin-contentSL">		
 			<?php echo $this->signature ; ?>
 
-			<p><?php echo __('This plugin creates information box in posts/page to contain update information', $this->pluginID) ; ?></p>
-			<p><?php echo sprintf(__('You may add an update box by adding to you post %s', $this->pluginID), '<code>[maj update="dd/mm/yy" expire="dd/mm/yy"]Your text[/maj]</code>') ; ?></p>
 			<!--debut de personnalisation-->
 		<?php
 			
@@ -354,10 +351,10 @@ class updatemessage extends pluginSedLex {
 			//		(bien mettre a jour les liens contenu dans les <li> qui suivent)
 			//
 			//==========================================================================================
-			$tabs = new adminTabs() ; 
+			$tabs = new SLFramework_Tabs() ; 
 			
 			ob_start() ; 
-					$params = new parametersSedLex($this, 'tab-parameters') ; 
+					$params = new SLFramework_Parameters($this, 'tab-parameters') ; 
 					$params->add_title(__('Where do you want to place the update message?',$this->pluginID)) ; 
 					$params->add_param('position', __('Placement:',$this->pluginID)) ; 
 					$params->add_comment(sprintf(__('You can also add a shorcode %s to add an updated box wherever you want in your posts', $this->pluginID), '<code>[maj update="dd/mm/yy" expire="dd/mm/yy"]your updated text[/maj]</code>')) ; 
@@ -367,61 +364,51 @@ class updatemessage extends pluginSedLex {
 
 					$params->add_title(__('How do you want to render the message?',$this->pluginID)) ; 
 					$params->add_param('html', __('HTML:',$this->pluginID)) ; 
-					$comment = __('The standard html is:',$this->pluginID); 
-					$comment .= "<br/><span style='margin-left: 30px;'><code>&lt;div class=\"update_message\"&gt;</code></span><br/>" ; 
-					$comment .= "<span style='margin-left: 60px;'><code>&lt;small&gt;Updated: %ud%&lt;/small&gt</code></span><br/>" ; 
-					$comment .= "<span style='margin-left: 60px;'><code>&lt;p&gt;%ut%&lt;/p&gt</code></span><br/>" ; 
-					$comment .= "<span style='margin-left: 30px;'><code>&lt;/div&gt</code></span><br/>";
-					$comment .= "<code>%pd%</code> = ".__('Published date',$this->pluginID)."</span><br/>" ; 
+					$params->add_comment(__('The default HTML is:',$this->pluginID)); 
+					$params->add_comment_default_value('html') ; 
+					$params->add_comment(__('The following expressions will be replaced:',$this->pluginID)); 
+					$comment = "<code>%pd%</code> = ".__('Published date',$this->pluginID)."</span><br/>" ; 
 					$comment .= "<code>%ud%</code> = ".__('Updated date',$this->pluginID)."</span><br/>" ; 
 					$comment .= "<code>%ut%</code> = ".__('Updated text',$this->pluginID)."</span>" ; 
 					$params->add_comment($comment) ; 	
 					$params->add_param('css', __('CSS:',$this->pluginID)) ; 
-					$comment = __('The standard CSS is:',$this->pluginID); 
-					$comment .= "<br/><code>.update_message {<br/>
-&nbsp; &nbsp; &nbsp; background: #fff url(../../update-message/img/bkg-yellow.gif) repeat-x top;<br/>
-&nbsp; &nbsp; &nbsp; border: 1px solid #e6db55;<br/>
-&nbsp; &nbsp; &nbsp; padding: 15px 15px 5px 15px;<br/>
-&nbsp; &nbsp; &nbsp; margin: 10px 0 10px 0;<br/>
-&nbsp; &nbsp; &nbsp; -moz-border-radius: 5px;<br/>
-&nbsp; &nbsp; &nbsp; -khtml-border-radius: 5px;<br/>
-&nbsp; &nbsp; &nbsp; -webkit-border-radius: 5px;<br/>
-&nbsp; &nbsp; &nbsp; border-radius: 5px;<br/>
-}<br/>
-<br/>
-.update_message p {<br/>
-&nbsp; &nbsp; &nbsp; font: normal 11px/14px Arial;<br/>
-&nbsp; &nbsp; &nbsp; margin: 0;<br/>
-&nbsp; &nbsp; &nbsp; padding: 0 0 10px 0;<br/>
-&nbsp; &nbsp; &nbsp; color: #555;<br/>
-}<br/>
-<br/>
-.update_message small {<br/>
-&nbsp; &nbsp; &nbsp; font: bold 11px/14px Arial;<br/>
-&nbsp; &nbsp; &nbsp; color: #555;<br/>
-&nbsp; &nbsp; &nbsp; text-transform: uppercase;<br/>
-}</code><br/>";
-
-					
-					$params->add_comment($comment) ; 						
+					$params->add_comment(__('The default CSS is:',$this->pluginID)) ; 
+					$params->add_comment_default_value('css') ; 
 					$params->flush() ; 
 					
 			$tabs->add_tab(__('Parameters',  $this->pluginID), ob_get_clean() , plugin_dir_url("/").'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/tab_param.png") ; 	
 			
+
+			// HOW To
+			ob_start() ;
+				echo "<p>".__('This plugin may display update/warning boxes in your posts/pages (for instance, to indicate that the content is not up-to-date, that the content has been changed, etc.).', $this->pluginID)."</p>" ;
+			$howto1 = new SLFramework_Box (__("Purpose of that plugin", $this->pluginID), ob_get_clean()) ; 
+			ob_start() ;
+				echo "<p>".sprintf(__('To display the update box, you may add an update box by adding to your post %s', $this->pluginID), '<code>[maj update="dd/mm/yy" expire="dd/mm/yy"]Your text[/maj]</code>')."</p>" ;
+				echo "<p>".sprintf(__(' - use %s to indicate the date of the update', $this->pluginID), '<code>update="dd/mm/yy"</code>')."</p>" ;
+				echo "<p>".sprintf(__(' - use %s to indicate the date when the box is to be removed as the update message had expired', $this->pluginID), '<code>expire="dd/mm/yy"</code>')."</p>" ;
+				echo "<p>".__('A button is available in the post/page editor.', $this->pluginID)."</p>" ;
+				echo "<p>".__('In the post/page editor, there is also a update widget on the left.', $this->pluginID)."</p>" ;
+			$howto2 = new SLFramework_Box (__("How to display the update box?", $this->pluginID), ob_get_clean()) ; 
+			ob_start() ;
+				 echo $howto1->flush() ; 
+				 echo $howto2->flush() ; 
+			$tabs->add_tab(__('How To',  $this->pluginID), ob_get_clean() , plugin_dir_url("/").'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/tab_how.png") ; 				
+
 			ob_start() ; 
 				$plugin = str_replace("/","",str_replace(basename(__FILE__),"",plugin_basename( __FILE__))) ; 
-				$trans = new translationSL($this->pluginID, $plugin) ; 
+				$trans = new SLFramework_Translation($this->pluginID, $plugin) ; 
 				$trans->enable_translation() ; 
 			$tabs->add_tab(__('Manage translations',  $this->pluginID), ob_get_clean(), plugin_dir_url("/").'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/tab_trad.png" ) ; 	
 
 			ob_start() ; 
 				$plugin = str_replace("/","",str_replace(basename(__FILE__),"",plugin_basename( __FILE__))) ; 
-				$trans = new feedbackSL($plugin, $this->pluginID) ; 
+				$trans = new SLFramework_Feedback($plugin, $this->pluginID) ; 
 				$trans->enable_feedback() ; 
 			$tabs->add_tab(__('Give feedback',  $this->pluginID), ob_get_clean() , plugin_dir_url("/").'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/tab_mail.png") ; 	
 			
 			ob_start() ; 
-				$trans = new otherPlugins("sedLex", array('wp-pirates-search')) ; 
+				$trans = new SLFramework_OtherPlugins("sedLex", array('wp-pirates-search')) ; 
 				$trans->list_plugins() ; 
 			$tabs->add_tab(__('Other plugins',  $this->pluginID), ob_get_clean() , plugin_dir_url("/").'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__))."core/img/tab_plug.png") ; 	
 			

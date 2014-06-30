@@ -6,7 +6,7 @@ Author URI: http://www.sedlex.fr/
 Plugin URI: http://wordpress.org/plugins/update-message/
 Tags: posts, post, update, message
 Requires at least: 3.0
-Tested up to: 3.8.2
+Tested up to: 3.9.1
 Stable tag: trunk
 
 Add an update box in posts. 
@@ -44,14 +44,9 @@ This plugin works with multisite installation of Wordpress.
 
 = Features of the framework =
 
-This plugin uses the SL framework. This framework eases the creation of new plugins by providing incredible tools and frames.
+This plugin uses the SL framework. This framework eases the creation of new plugins by providing tools and frames (see dev-toolbox plugin for more info).
 
-For instance, a new created plugin comes with
-
-* A translation interface to simplify the localization of the text of the plugin ; 
-* An embedded SVN client (subversion) to easily commit/update the plugin in wordpress.org repository ; 
-* A detailled documentation of all available classes and methodes ; 
-* etc.
+You may easily translate the text of the plugin and submit it to the developer, send a feedback, or choose the location of the plugin in the admin panel.
 
 Have fun !
 
@@ -70,6 +65,9 @@ Have fun !
 3. Configuration of the update box in a post
 
 == Changelog ==
+
+= 1.3.5 =
+* NEW: How to
 
 = 1.3.4 =
 * NEW: Improve the look of the plugin
@@ -126,4 +124,4 @@ Have fun !
 Visit http://www.sedlex.fr/cote_geek/
 
  
-InfoVersion:44a96f4bb83910433e78ae003a792777
+InfoVersion:1859c57ce11423f336da98ab5c7aaf418801d604
